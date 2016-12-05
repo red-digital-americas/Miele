@@ -23,9 +23,12 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
 
-// $app->withFacades();
+$app->withFacades();
 
-// $app->withEloquent();
+class_exists('JWTAuth') or class_alias(Tymon\JWTAuth\Facades\JWTAuth::class, 'JWTAuth');
+class_exists('JWTFactory') or class_alias(Tymon\JWTAuth\Facades\JWTFactory::class, 'JWTFactory');
+
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +51,11 @@ $app->singleton(
     App\Console\Kernel::class
 );
 
+$app->singleton(
+    Illuminate\Contracts\Routing\ResponseFactory::class,
+    Illuminate\Routing\ResponseFactory::class
+);
+
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -63,9 +71,11 @@ $app->singleton(
 //    App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    // 'auth'        => App\Http\Middleware\Authenticate::class,
+    'jwt.auth'    => Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+    'jwt.refresh' => Tymon\JWTAuth\Middleware\RefreshToken::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -78,9 +88,18 @@ $app->singleton(
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
+$app->configure('session');
+$app->register(Illuminate\Session\SessionServiceProvider::class);
+$app->register(Illuminate\Cookie\CookieServiceProvider::class);
+$app->register(Illuminate\Cache\CacheServiceProvider::class);
+
+$app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
+// $app->register(App\Providers\GuardServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+
+// JWTAuth
+$app->register(Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
