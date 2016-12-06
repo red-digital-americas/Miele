@@ -54,17 +54,24 @@ class UserController extends Controller {
         if(($isUserEnable = $this->isUserReadyToRegister($dataRequest)))
                 return $isUserEnable;
         
-        if(($newUser = User::create($dataRequest)))
+        if(($newUser = User::create($dataRequest))){
+            $this->setRememberToken($newUser);
             return response ()->json ([
                     'status' => true, 
                     'message' => 'The user '.$dataRequest['email'].' has been registered'
                 ]);
+        }
         else
             return response ()->json ([
                     'status' => false, 
                     'message' => 'it was not possible to register the user. Internal server error'
                 ],
                 IlluminateResponse::HTTP_INTERNAL_SERVER_ERROR);   //Internal server error
+    }
+    
+    private function setRememberToken($user){
+        $user->remember_token = str_random(10);
+        $user->save();
     }
     
     /**
@@ -98,7 +105,6 @@ class UserController extends Controller {
         $dataRequest                    = $request->all();
         $dataRequest['created_by']      = $userData->idUser;
         $dataRequest['password']        = app('hash')->make($dataRequest['password']);
-        $dataRequest['remember_token']  = str_random(10);
         
         return $dataRequest;
     }
@@ -156,7 +162,6 @@ class UserController extends Controller {
         $userToReactivate->status = 1;
         $userToReactivate->updated_by = $userAuthenticated->idUser;
         $userToReactivate->save();
-        $userToReactivate->touch();  // update timestamps (updated_at)
         
         return response ()->json ([
                     'status' => true,
@@ -206,8 +211,53 @@ class UserController extends Controller {
     /**
      * Update the information of the user
      */
-    public function update(){
-        die("updating user");
+    public function update(Request $request){
+        try {
+            $this->validate($request, [
+                'idUser'            => 'required|integer',
+                'password'          => 'string|max:45|min:5',
+                'name'              => 'string|max:45|min:3',
+                'last_name'         => 'string|max:45|min:3',
+                'mothers_last_name' => 'string|max:45|min:3'                
+            ]);
+            
+        } catch (HttpResponseException $e) {
+            return response()->json([
+                    'status'    => false,
+                    'message'   => 'invalid_parameters',
+                ], 
+                IlluminateResponse::HTTP_BAD_REQUEST);
+        }
+        
+        return $this->updateUser($request);
+    }
+    
+    /**
+     * Method that update the information of user
+     * @param Request $request
+     * @return type
+     */
+    private function updateUser(Request $request){
+        $idUserToUpdate = $request->get('idUser');
+        $data = $request->all();
+        if(($user = User::find($idUserToUpdate)) == NULL)
+            return response ()->json ([
+                "status"    => false,
+                "message"   => "user doesn't exists"
+            ]);
+        
+        unset($data['email']);
+        
+        if($user->update($data))
+                return response()->json([
+                    "status" => true,
+                    'message' => 'user updated'
+                ]);
+        else
+            return response()->json([
+                    "status" => false,
+                    'message' => 'it was not possible to update the user information'
+                ]);
     }
     
 }

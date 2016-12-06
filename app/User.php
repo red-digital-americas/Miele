@@ -26,7 +26,6 @@ class User extends Model implements
         'last_name',
         'mothers_last_name',
         'created_by',
-        'remember_token'
     ];
 
     /**
