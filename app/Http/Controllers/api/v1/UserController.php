@@ -51,13 +51,10 @@ class UserController extends Controller {
     private function registerUser(Request $request){
         $dataRequest = $this->buildNewUserArrayData($request);
         
-        if(!$this->checkIfExistsUser($dataRequest['email']) == NULL)
-            return response ()->json ([
-                    'status' => false, 
-                    'message' => 'The user '.$dataRequest['email'].' is already registered'
-                ]);
+        if(($isUserEnable = $this->isUserReadyToRegister($dataRequest)))
+                return $isUserEnable;
         
-        if(($user = User::create($dataRequest)))
+        if(($newUser = User::create($dataRequest)))
             return response ()->json ([
                     'status' => true, 
                     'message' => 'The user '.$dataRequest['email'].' has been registered'
@@ -70,10 +67,32 @@ class UserController extends Controller {
                 IlluminateResponse::HTTP_INTERNAL_SERVER_ERROR);   //Internal server error
     }
     
-    private function checkIfExistsUser($email){
-        return User::where('email', $email)->first();
-    }
+    /**
+     * 
+     * @param type $dataRequest
+     * @return boolean true: if the user exists | false if the user doen's exists
+     */
+    private function isUserReadyToRegister($dataRequest){
+        if(($oldUser = $this->getUser('email',$dataRequest['email'])) != NULL){
+            if((int) $oldUser->status == 1)
+                return response ()->json ([
+                        'status' => false, 
+                        'message' => 'The user '.$dataRequest['email'].' is already registered'
+                    ]);
+            else
+                return response ()->json ([
+                        'status' => false, 
+                        'message' => 'The user '.$dataRequest['email'].' is already registered but disabled'
+                    ]);
+        }
         
+        return false;
+    }
+    
+    public function getUser($column, $value){
+        return User::where($column, $value)->first();
+    }
+            
     private function buildNewUserArrayData($request){
         $userData                       = $this->getAuthenticatedUserData();
         $dataRequest                    = $request->all();
@@ -99,7 +118,8 @@ class UserController extends Controller {
     public function delete(Request $request){
         try {
             $this->validate($request, [
-                'idUser' => 'required|integer',
+                'idUser'        => 'required|integer',
+                'reactivate'    => 'integer'
             ]);
             
         } catch (HttpResponseException $e) {
@@ -110,34 +130,57 @@ class UserController extends Controller {
                 IlluminateResponse::HTTP_BAD_REQUEST);
         }
         
-        return $this->deleteUser($request);
+        if(($userToDelete = $this->getUser("id", $request->get("idUser"))) == NULL)
+            return response ()->json ([
+                    'status' => false,
+                    'message' => 'this user doesn\'t exist'
+                ]);        
+            
+        if((int) $request->get('reactivate') == 1)
+            return $this->reactivateUser ($userToDelete);
+        else
+            return $this->deleteUser($request, $userToDelete);
     }
     
-    private function deleteUser(Request $request){
+    private function reactivateUser($userToReactivate){
+        $userAuthenticated  = $this->getAuthenticatedUserData();
+        if(($isSystemUser   = $this->ifIsUserOfSystem($userToReactivate->id)))
+            return $isSystemUser;
+        
+        if((int) $userToReactivate->status == 1)
+            return response ()->json ([
+                    'status' => true,
+                    'message' => 'this user is activated'
+                ]);
+        
+        $userToReactivate->status = 1;
+        $userToReactivate->updated_by = $userAuthenticated->idUser;
+        $userToReactivate->save();
+        $userToReactivate->touch();  // update timestamps (updated_at)
+        
+        return response ()->json ([
+                    'status' => true,
+                    'message' => 'user reactivated'
+                ]);
+    }
+    
+    private function deleteUser(Request $request, $userToDelete){
         $idUser             = $request->get('idUser');
         $userAuthenticated  = $this->getAuthenticatedUserData();
         
         if(($isSystemUser   = $this->ifIsUserOfSystem($idUser)))
             return $isSystemUser;
-        
-        $user = User::find($idUser);
-        
-        if($user == NULL)
-            return response ()->json ([
-                    'status' => false,
-                    'message' => 'this user doesn\'t exist'
-                ]);
-        
-        if((int) $user->status == 0)
+               
+        if((int) $userToDelete->status == 0)
             return response ()->json ([
                     'status' => true,
                     'message' => 'this user is desactivated'
                 ]);
         
-        $user->status = 0;
-        $user->updated_by = $userAuthenticated->idUser;
-        $user->save();
-        $user->touch();  // update timestamps (updated_at)
+        $userToDelete->status = 0;
+        $userToDelete->updated_by = $userAuthenticated->idUser;
+        $userToDelete->save();
+        $userToDelete->touch();  // update timestamps (updated_at)
         
         return response ()->json ([
                     'status' => true,
@@ -145,14 +188,26 @@ class UserController extends Controller {
                 ]);
     }
     
+    /**
+     * Check if the user selected is a system user
+     * @param type $idUser
+     * @return boolean
+     */
     private function ifIsUserOfSystem($idUser){
         if((int)$idUser == 1)
             return response()->json ([
                     'status' => false,
-                    'message' => "you can't delete this user"
+                    'message' => "you can't modify this user"
                 ]);
         else 
             return false;
+    }
+    
+    /**
+     * Update the information of the user
+     */
+    public function update(){
+        die("updating user");
     }
     
 }
