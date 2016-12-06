@@ -173,6 +173,12 @@ class UserController extends Controller {
         $idUser             = $request->get('idUser');
         $userAuthenticated  = $this->getAuthenticatedUserData();
         
+        if((int) $idUser == (int) $userAuthenticated->idUser)
+            return response ()->json ([
+                "status"    => false,
+                "message"   => "you cannot delete yourself"
+            ]);
+        
         if(($isSystemUser   = $this->ifIsUserOfSystem($idUser)))
             return $isSystemUser;
                
