@@ -46,7 +46,7 @@ class AuthController extends Controller {
             if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json([
                             'error' => [
-                                'message' => 'credenciales_invalidas',
+                                'message' => 'invalid credential\'s',
                             ],
                                 ], IlluminateResponse::HTTP_UNAUTHORIZED);
             }
@@ -89,7 +89,7 @@ class AuthController extends Controller {
 
         $token->invalidate();
 
-        return ['success' => 'token_invalidado'];
+        return ['status' => true, "message" => 'your token has been invalidated'];
     }
 
     /**
@@ -102,7 +102,7 @@ class AuthController extends Controller {
 
         $newToken = $token->refresh();
 
-        return ['success' => 'refreshed_token', 'token' => $newToken];
+        return ['success' => true, 'message' => 'token refreshed', 'token' => $newToken];
     }
 
     public static function getAuthenticatedUser() {
@@ -118,7 +118,7 @@ class AuthController extends Controller {
             return response()->json(['status' => 0, 'message' => 'token_absent'], $e->getStatusCode());
         }
         
-        return response()->json(['status' => 1, 'idUser' => $user->id]);
+        return response()->json(['status' => 1, 'id' => $user->id])->getData();
     }
 
 }

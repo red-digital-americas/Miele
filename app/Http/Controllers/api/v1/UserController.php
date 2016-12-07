@@ -13,6 +13,12 @@ use Illuminate\Http\Exception\HttpResponseException;
 use App\User;
 
 class UserController extends Controller {
+    private $userLogged;
+    
+    public function __construct() {
+        $this->userLogged = AuthController::getAuthenticatedUser();
+    }
+    
     /**
      * This method return the list of users registered in the system.
      * @return type
@@ -38,10 +44,7 @@ class UserController extends Controller {
                 'email'             => 'required'
             ]);
         } catch (HttpResponseException $e) {
-            return response()->json([
-                    'status' => false,  
-                    'message' => 'invalid_parameters',
-                ], 
+            return response()->json(['status' => false,  'message' => 'invalid_parameters'], 
                 IlluminateResponse::HTTP_BAD_REQUEST);
         }
         
@@ -56,16 +59,10 @@ class UserController extends Controller {
         
         if(($newUser = User::create($dataRequest))){
             $this->setRememberToken($newUser);
-            return response ()->json ([
-                    'status' => true, 
-                    'message' => 'The user '.$dataRequest['email'].' has been registered'
-                ]);
+            return response ()->json (['status' => true, 'message' => 'The user '.$dataRequest['email'].' has been registered']);
         }
         else
-            return response ()->json ([
-                    'status' => false, 
-                    'message' => 'it was not possible to register the user. Internal server error'
-                ],
+            return response ()->json (['status' => false, 'message' => 'it was not possible to register the user. Internal server error'],
                 IlluminateResponse::HTTP_INTERNAL_SERVER_ERROR);   //Internal server error
     }
     
@@ -82,15 +79,9 @@ class UserController extends Controller {
     private function isUserReadyToRegister($dataRequest){
         if(($oldUser = $this->getUser('email',$dataRequest['email'])) != NULL){
             if((int) $oldUser->status == 1)
-                return response ()->json ([
-                        'status' => false, 
-                        'message' => 'The user '.$dataRequest['email'].' is already registered'
-                    ]);
+                return response ()->json (['status' => false, 'message' => 'The user '.$dataRequest['email'].' is already registered']);
             else
-                return response ()->json ([
-                        'status' => false, 
-                        'message' => 'The user '.$dataRequest['email'].' is already registered but disabled'
-                    ]);
+                return response ()->json (['status' => false, 'message' => 'The user '.$dataRequest['email'].' is already registered but disabled']);
         }
         
         return false;
@@ -101,20 +92,11 @@ class UserController extends Controller {
     }
             
     private function buildNewUserArrayData($request){
-        $userData                       = $this->getAuthenticatedUserData();
         $dataRequest                    = $request->all();
-        $dataRequest['created_by']      = $userData->idUser;
+        $dataRequest['created_by']      = $this->userLogged->id;
         $dataRequest['password']        = app('hash')->make($dataRequest['password']);
         
         return $dataRequest;
-    }
-    
-    private function getAuthenticatedUserData(){
-        return $this->getAuthenticatedUser()->getData();
-    }
-    
-    private function getAuthenticatedUser(){
-        return AuthController::getAuthenticatedUser();
     }
     
     /**
@@ -124,23 +106,17 @@ class UserController extends Controller {
     public function delete(Request $request){
         try {
             $this->validate($request, [
-                'idUser'        => 'required|integer',
+                'id'        => 'required|integer',
                 'reactivate'    => 'integer'
             ]);
             
         } catch (HttpResponseException $e) {
-            return response()->json([
-                    'status' => false,
-                    'message' => 'invalid_parameters',
-                ], 
+            return response()->json(['status' => false, 'message' => 'invalid_parameters',], 
                 IlluminateResponse::HTTP_BAD_REQUEST);
         }
         
-        if(($userToDelete = $this->getUser("id", $request->get("idUser"))) == NULL)
-            return response ()->json ([
-                    'status' => false,
-                    'message' => 'this user doesn\'t exist'
-                ]);        
+        if(($userToDelete = $this->getUser("id", $request->get("id"))) == NULL)
+            return response ()->json (['status' => false, 'message' => 'this user doesn\'t exist']);        
             
         if((int) $request->get('reactivate') == 1)
             return $this->reactivateUser ($userToDelete);
@@ -149,54 +125,36 @@ class UserController extends Controller {
     }
     
     private function reactivateUser($userToReactivate){
-        $userAuthenticated  = $this->getAuthenticatedUserData();
         if(($isSystemUser   = $this->ifIsUserOfSystem($userToReactivate->id)))
             return $isSystemUser;
         
         if((int) $userToReactivate->status == 1)
-            return response ()->json ([
-                    'status' => true,
-                    'message' => 'this user is activated'
-                ]);
+            return response ()->json (['status' => true, 'message' => 'this user is activated']);
         
         $userToReactivate->status = 1;
-        $userToReactivate->updated_by = $userAuthenticated->idUser;
+        $userToReactivate->updated_by = $this->userLogged->id;
         $userToReactivate->save();
         
-        return response ()->json ([
-                    'status' => true,
-                    'message' => 'user reactivated'
-                ]);
+        return response ()->json (['status' => true, 'message' => 'user reactivated']);
     }
     
     private function deleteUser(Request $request, $userToDelete){
-        $idUser             = $request->get('idUser');
-        $userAuthenticated  = $this->getAuthenticatedUserData();
+        $idUser             = $request->get('id');
         
-        if((int) $idUser == (int) $userAuthenticated->idUser)
-            return response ()->json ([
-                "status"    => false,
-                "message"   => "you cannot delete yourself"
-            ]);
+        if((int) $idUser == (int) $this->userLogged->id)
+            return response ()->json (["status"    => false, "message"   => "you cannot delete yourself"]);
         
         if(($isSystemUser   = $this->ifIsUserOfSystem($idUser)))
             return $isSystemUser;
                
-        if((int) $userToDelete->status == 0)
-            return response ()->json ([
-                    'status' => true,
-                    'message' => 'this user is desactivated'
-                ]);
+        if((int) $userToDelete->status == 0)return response ()->json (['status' => true, 'message' => 'this user is deactivated']);
         
         $userToDelete->status = 0;
-        $userToDelete->updated_by = $userAuthenticated->idUser;
+        $userToDelete->updated_by = $this->userLogged->id;
         $userToDelete->save();
         $userToDelete->touch();  // update timestamps (updated_at)
         
-        return response ()->json ([
-                    'status' => true,
-                    'message' => 'user desactivated'
-                ]);
+        return response ()->json (['status' => true, 'message' => 'user deactivated']);
     }
     
     /**
@@ -206,10 +164,7 @@ class UserController extends Controller {
      */
     private function ifIsUserOfSystem($idUser){
         if((int)$idUser == 1)
-            return response()->json ([
-                    'status' => false,
-                    'message' => "you can't modify this user"
-                ]);
+            return response()->json (['status' => false, 'message' => "you can't modify this user"]);
         else 
             return false;
     }
@@ -220,7 +175,7 @@ class UserController extends Controller {
     public function update(Request $request){
         try {
             $this->validate($request, [
-                'idUser'            => 'required|integer',
+                'id'                => 'required|integer',
                 'password'          => 'string|max:45|min:5',
                 'name'              => 'string|max:45|min:3',
                 'last_name'         => 'string|max:45|min:3',
@@ -228,10 +183,7 @@ class UserController extends Controller {
             ]);
             
         } catch (HttpResponseException $e) {
-            return response()->json([
-                    'status'    => false,
-                    'message'   => 'invalid_parameters',
-                ], 
+            return response()->json(['status'    => false,'message'   => 'invalid_parameters',], 
                 IlluminateResponse::HTTP_BAD_REQUEST);
         }
         
@@ -244,26 +196,18 @@ class UserController extends Controller {
      * @return type
      */
     private function updateUser(Request $request){
-        $idUserToUpdate = $request->get('idUser');
+        $idUserToUpdate = $request->get('id');
         $data = $request->all();
+        
         if(($user = User::find($idUserToUpdate)) == NULL)
-            return response ()->json ([
-                "status"    => false,
-                "message"   => "user doesn't exists"
-            ]);
+            return response ()->json (["status"    => false, "message"   => "user doesn't exists"]);
         
         unset($data['email']);
         
         if($user->update($data))
-                return response()->json([
-                    "status" => true,
-                    'message' => 'user updated'
-                ]);
+            return response()->json(["status" => true, 'message' => 'user updated']);
         else
-            return response()->json([
-                    "status" => false,
-                    'message' => 'it was not possible to update the user information'
-                ]);
+            return response()->json(["status" => false, 'message' => 'it was not possible to update the user information']);
     }
     
 }

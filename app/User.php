@@ -20,6 +20,7 @@ class User extends Model implements
      * @var array
      */
     protected $fillable = [
+        'id',
         'name',
         'email',
         'password',
@@ -37,9 +38,16 @@ class User extends Model implements
         'password',
         'remember_token',
         'created_by',
+        'created_at',
+        'updated_at',
         'updated_by',
         'status'
     ];
+    
+    public function role()
+    {
+        return $this->hasOne('App\Roles', "idRole");
+    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
