@@ -18,28 +18,33 @@ class CreateSchema extends Migration {
     public function up() {
         /*      ---- Survey System Tables ----      */
         Schema::create('log_Session', function (Blueprint $table) {
-            $table->increments('id')                 ->nullable(false);
+            $table->increments('id')                    ->nullable(false);
             $table->string('event', 255)                ->nullable(false);
             $table->timestamp('created_at')             ->nullable(false);
             $table->integer('created_by')               ->nullable(false);
         });
 
         Schema::create('log_Tran', function (Blueprint $table) {
-            $table->increments('id')                 ->nullable(false);
+            $table->increments('id')                    ->nullable(false);
             $table->string('event', 255)                ->nullable(false);
             $table->timestamp('created_at')             ->nullable(false);
             $table->integer('created_by')               ->nullable(false);
         });
 
         Schema::create('log_Error', function (Blueprint $table) {
-            $table->increments('id')                 ->nullable(false);
+            $table->increments('id')                    ->nullable(false);
             $table->string('event', 255)                ->nullable(false);
             $table->timestamp('created_at')             ->nullable(false);
             $table->integer('created_by')               ->nullable(false);
         });
         
+        Schema::create('mst_Newsletter', function(Blueprint $table){
+            $table->increments('id');
+            $table->string('email', 45)                 ->nullable(false)->unique();
+        });
+        
         Schema::create('mst_Roles', function (Blueprint $table) {
-            $table->increments('id')                 ->nullable(false);
+            $table->increments('id')                    ->nullable(false);
             $table->string('name', 255)                 ->unique()->nullable(false);
             $table->timestamp('created_at')             ->nullable(false);
             $table->integer('created_by')               ->nullable(false);
@@ -92,7 +97,7 @@ class CreateSchema extends Migration {
         });
 
         Schema::create('mst_Questions', function (Blueprint $table) {
-            $table->increments('id')            ->nullable(false);
+            $table->increments('id')                    ->nullable(false);
             $table->string('question', 255)             ->nullable(false);
             $table->boolean('required')                 ->nullable(false)->default(0);
             $table->integer('idSurvey')                 ->unsigned()->nullable(false);
@@ -116,7 +121,7 @@ class CreateSchema extends Migration {
         });
 
         Schema::create('mst_QuestionAnswers', function (Blueprint $table) {
-            $table->increments('id')      ->nullable(false);
+            $table->increments('id')                    ->nullable(false);
             $table->string('answer', 255)               ->nullable(false);
             $table->integer('idQuestion')               ->unsigned()->nullable(false);
             $table->integer('idAnswerType')             ->unsigned()->nullable(false);
@@ -141,7 +146,7 @@ class CreateSchema extends Migration {
         });
 
         Schema::create('mst_AsnwerSurvey', function (Blueprint $table) {
-            $table->increments('id')        ->nullable(false);
+            $table->increments('id')                    ->nullable(false);
             $table->string('answer')                    ->nullable();
             $table->integer('idQuestion')               ->unsigned()->nullable(false);
             $table->integer('idQuestionAnswer')         ->nullable();
@@ -168,7 +173,7 @@ class CreateSchema extends Migration {
         /*      ---- Product Catalog Tables ----        */
 
         Schema::create('cat_CatProduct', function (Blueprint $table) {
-            $table->increments('id')          ->nullable(false);
+            $table->increments('id')                    ->nullable(false);
             $table->string('name', 255)                 ->nullable(false);
             $table->integer('parent_id')                ->nullable(false);
             $table->boolean('status')                   ->nullable(false)->default(1);
@@ -176,7 +181,7 @@ class CreateSchema extends Migration {
         });
         
         Schema::create('cat_Products', function (Blueprint $table) {
-            $table->increments('id')             ->nullable(false);
+            $table->increments('id')                    ->nullable(false);
             $table->integer('idCatProduct')             ->nullable(false)->unsigned();
             $table->string('name', 255)                 ->nullable(false);
             $table->string('description', 255)          ->nullable();
@@ -195,7 +200,7 @@ class CreateSchema extends Migration {
         });
 
         Schema::create('mst_ProdVar', function (Blueprint $table) {
-            $table->increments('id')             ->nullable(false);
+            $table->increments('id')                    ->nullable(false);
             $table->string('var_name')                  ->nullable(false);
             $table->integer('idProduct')->unsigned()    ->nullable(false);
             
@@ -203,7 +208,7 @@ class CreateSchema extends Migration {
         });
 
         Schema::create('mst_CatProdMedia', function (Blueprint $table) {
-            $table->increments('id')               ->nullable(false);
+            $table->increments('id')                    ->nullable(false);
             $table->integer('idCatProduct')             ->unsigned()->nullable(false);
             $table->string('path', 255)                 ->nullable(false);
             $table->timestamp('created_at')             ->nullable(false);
@@ -212,7 +217,7 @@ class CreateSchema extends Migration {
         });
         
         Schema::create('mst_Media', function (Blueprint $table) {
-            $table->increments('id')               ->nullable(false);
+            $table->increments('id')                    ->nullable(false);
             $table->integer('idProdVar')                ->nullable(false)->unsigned();
             $table->string('path', 255)                 ->nullable(false);
             $table->timestamp('created_at')             ->nullable(false);
@@ -244,6 +249,9 @@ class CreateSchema extends Migration {
         
         if (Schema::hasTable('log_Error')) 
             Schema::drop('log_Error');
+        
+        if (Schema::hasTable('mst_Newsletter'))
+            Schema::drop('mst_Newsletter');
         
         if (Schema::hasTable('mst_SurveySubject')) 
             Schema::drop('mst_SurveySubject');
