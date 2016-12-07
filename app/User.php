@@ -46,7 +46,7 @@ class User extends Model implements
     
     public function role()
     {
-        return $this->hasOne('App\Roles', "idRole");
+        return $this->hasOne('App\mstRoles', 'id');
     }
 
     /**
