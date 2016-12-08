@@ -14,6 +14,6 @@ namespace App\Exceptions;
  * @author danielunag
  */
 class SystemMessages {
-    static $SYSTEM_ERROR_ACTION = "it was not possible to do this action";
+     const SYSTEM_ERROR_ACTION = "it was not possible to do this action";
     
 }

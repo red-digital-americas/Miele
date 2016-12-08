@@ -33,6 +33,11 @@ $app->group([
     $app->post("survey/delete", "api\\v1\SurveyController@delete");
     $app->post("survey/update", "api\\v1\SurveyController@update");
     
+    /* --------- cat surveys ---------     */
+    $app->post("catsurveystype/", "api\\v1\CatSurveyTypeController@index");
+    $app->post("catsurveystype/create", "api\\v1\CatSurveyTypeController@create");
+    $app->post("catsurveystype/update", "api\\v1\CatSurveyTypeController@update");
+    $app->post("catsurveystype/delete", "api\\v1\CatSurveyTypeController@delete");
     /* ----------   Token   ----------     */
     $app->get('/auth/refresh', 'App\Http\Controllers\Auth\AuthController@getRefresh');
     $app->delete('/auth/invalidate', 'App\Http\Controllers\Auth\AuthController@deleteInvalidate');

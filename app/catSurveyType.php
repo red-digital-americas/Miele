@@ -1,10 +1,9 @@
 <?php
 /**
- * Description of mstSurveys
+ * Description of catSurveysType
  *
  * @author danielunag
  */
-
 namespace App;
 
 use Illuminate\Auth\Authenticatable;
@@ -13,7 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class mstSurveys extends Model implements AuthenticatableContract, AuthorizableContract{
+class catSurveyType extends Model implements AuthenticatableContract, AuthorizableContract{
+    public $table = 'cat_SurveyType';
     use Authenticatable, Authorizable;
 
     /**
@@ -24,9 +24,6 @@ class mstSurveys extends Model implements AuthenticatableContract, AuthorizableC
     protected $fillable = [
         "id",
         "name",
-        "welcome_text",
-        "finish_text",
-        "anon",
         "status"
     ];
 
