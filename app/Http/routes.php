@@ -27,6 +27,12 @@ $app->group([
     $app->post("roles/delete", "api\\v1\RolesController@delete");
     $app->post("roles/update", "api\\v1\RolesController@update");
     
+    /* ----------   Surveys ----------     */
+    $app->post("survey/"     , "api\\v1\SurveyController@index");
+    $app->post("survey/create", "api\\v1\SurveyController@create");
+    $app->post("survey/delete", "api\\v1\SurveyController@delete");
+    $app->post("survey/update", "api\\v1\SurveyController@update");
+    
     /* ----------   Token   ----------     */
     $app->get('/auth/refresh', 'App\Http\Controllers\Auth\AuthController@getRefresh');
     $app->delete('/auth/invalidate', 'App\Http\Controllers\Auth\AuthController@deleteInvalidate');
