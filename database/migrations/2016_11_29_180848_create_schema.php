@@ -111,7 +111,7 @@ class CreateSchema extends Migration {
         });
         
         Schema::create('cat_AnswerType', function (Blueprint $table) {
-            $table->increments('id')          ->nullable(false);
+            $table->increments('id')                    ->nullable(false);
             $table->string('name', 45)                  ->nullable(false);
             $table->timestamp('created_at')             ->nullable(false);
             $table->integer('created_by')               ->nullable(false);
@@ -136,11 +136,12 @@ class CreateSchema extends Migration {
         });
 
         Schema::create('mst_SurveyApplied', function (Blueprint $table) {
-            $table->increments('id')       ->nullable(false);
+            $table->increments('id')                    ->nullable(false);
             $table->integer('idSurveySubject')          ->nullable();
             $table->integer('idSurvey')                 ->unsigned()->nullable(false);
             $table->boolean('completed')                ->default(0);
             $table->timestamp('created_at')             ->nullable(false);
+            $table->integer('created_by')               ->nullable();
             
             $table->foreign('idSurvey')->references('id')->on('mst_Surveys');
         });

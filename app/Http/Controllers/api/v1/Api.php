@@ -66,5 +66,15 @@ class Api extends Controller {
 
         return true;
     }
+    
+    function setValuesRestrictedUpdate($object){
+        $object->updated_by = $this->userLogged->id;
+        return $object->save();
+    }
+    
+    function setValuesRestrictedOfCreate($object){
+        $object->created_by = $this->userLogged->id;
+        return $object->save();
+    }
 
 }

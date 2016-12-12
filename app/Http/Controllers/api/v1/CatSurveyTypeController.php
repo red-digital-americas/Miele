@@ -93,7 +93,7 @@ class CatSurveyTypeController extends Api{
         $survey->created_by = $this->userLogged->id;
         return $survey->save();
     }
-    
+     
     private function setValuesRestrictedUpdate($survey){
         $survey->updated_by = $this->userLogged->id;
         return $survey->save();
