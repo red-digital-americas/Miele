@@ -142,6 +142,8 @@ class CreateSchema extends Migration {
             $table->boolean('completed')                ->default(0);
             $table->timestamp('created_at')             ->nullable(false);
             $table->integer('created_by')               ->nullable();
+            $table->integer('updated_by')               ->nullable();
+            $table->timestamp('updated_at')             ->nullable();
             
             $table->foreign('idSurvey')->references('id')->on('mst_Surveys');
         });
@@ -165,8 +167,9 @@ class CreateSchema extends Migration {
             $table->string('last_name', 45)             ->nullable(false);
             $table->string('mothers_last_name', 45)     ->nullable();
             $table->date('birthday')                    ->nullable(false);
-            $table->string('addres')                    ->nullable(false);
+            $table->string('address')                    ->nullable(false);
             $table->string('telephone')                 ->nullable(false);
+            $table->string('email',45)                  ->nullable(false);
             $table->timestamp('created_at')             ->nullable(false);
             $table->integer('created_by')               ->nullable(false);
         });

@@ -45,6 +45,12 @@ $app->group([
     $app->post("surveyapplied/update", "api\\v1\SurveyAppliedController@update");
     $app->post("surveyapplied/delete", "api\\v1\SurveyAppliedController@delete");
     
+    /* --------- ServeySubject -------     */
+    $app->post("surveysubject/"      , "api\\v1\SurveySubjectController@index");
+    $app->post("surveysubject/create", "api\\v1\SurveySubjectController@create");
+    $app->post("surveysubject/update", "api\\v1\SurveySubjectController@update");
+    $app->post("surveysubject/delete", "api\\v1\SurveySubjectController@delete");
+   
     /* ----------   Token   ----------     */
     $app->get('/auth/refresh', 'App\Http\Controllers\Auth\AuthController@getRefresh');
     $app->delete('/auth/invalidate', 'App\Http\Controllers\Auth\AuthController@deleteInvalidate');

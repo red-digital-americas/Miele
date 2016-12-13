@@ -20,7 +20,7 @@ class Api extends Controller {
     protected $arrayCreate = array();
     protected $arrayUpdate = array();
     protected $arrayIndex = array();
-    protected $arraDelete = array();
+    protected $arrayDelete = array();
 
     public function __construct() {
         $this->userLogged = AuthController::getAuthenticatedUser();
@@ -31,7 +31,7 @@ class Api extends Controller {
             case "index": return $this->arrayIndex;
             case "create": return $this->arrayCreate;
             case "update": return $this->arrayUpdate;
-            case "delete": return $this->arrayUpdate;
+            case "delete": return $this->arrayDelete;
             default: return [];
         }
     }
@@ -52,8 +52,8 @@ class Api extends Controller {
         $this->arrayIndex = $arrayIndex;
     }
     
-    function setArraDelete($arraDelete) {
-        $this->arraDelete = $arraDelete;
+    function setArrayDelete($arraDelete) {
+        $this->arrayDelete = $arraDelete;
     }
 
     

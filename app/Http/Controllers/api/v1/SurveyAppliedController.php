@@ -24,7 +24,7 @@ class SurveyAppliedController extends Api{
             'completed'       => 'integer|required|',
         ]);
         
-        $this->setArraDelete([
+        $this->setArrayDelete([
             'id'            => 'integer|required'
         ]);
         parent::__construct();

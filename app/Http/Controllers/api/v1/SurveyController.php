@@ -31,7 +31,7 @@ class SurveyController extends Api{
             "anon"          => "integer",
         ]);
         
-        $this->setArraDelete([
+        $this->setArrayDelete([
             'name'          => 'string|required|max:100|min:3',
             "welcome_text"  => "string|max:255",
             "finish_text"   => "string|max:255",

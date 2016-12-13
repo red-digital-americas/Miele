@@ -22,7 +22,7 @@ class CatSurveyTypeController extends Api{
             'name'          => 'string|max:100|min:3'
         ]);
         
-        $this->setArraDelete([
+        $this->setArrayDelete([
             'name'          => 'string|required|max:100|min:3'
         ]);
         parent::__construct();
