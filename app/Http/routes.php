@@ -56,7 +56,6 @@ $app->group([
     $app->delete('/auth/invalidate', 'App\Http\Controllers\Auth\AuthController@deleteInvalidate');
 });
 
-
-
-
-
+$app->get('/', function(){
+    return view('index', []);
+});
