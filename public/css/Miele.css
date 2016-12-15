@@ -1,0 +1,21 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Dec 14, 2016, 10:41:45 AM
+    Author     : danielunag
+*/
+
+.login-logo{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.login-container label{
+    color: #EDE9E5;
+}
+
+.login-info a{
+    color: #EDE9E5;
+}

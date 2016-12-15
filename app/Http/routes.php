@@ -54,7 +54,21 @@ $app->group([
     /* ----------   Token   ----------     */
     $app->get('/auth/refresh', 'App\Http\Controllers\Auth\AuthController@getRefresh');
     $app->delete('/auth/invalidate', 'App\Http\Controllers\Auth\AuthController@deleteInvalidate');
+    
+    
 });
+
+$app->group([
+    'middleware' => 'jwt.auth',
+//    'prefix' => 'api/v1',
+//    'namespace' => 'App\Http\Controllers'
+    ],
+        function ($app) {
+            /* -------    Aplication  --------     */
+            $app->get('/home', function(){
+                return view('home', ["token" => JWTAuth::getToken()]);
+            });
+        });
 
 $app->get('/', function(){
     return view('index', []);

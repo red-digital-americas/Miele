@@ -45,26 +45,23 @@ class AuthController extends Controller {
             //Entonces retorna credenciales invalidas
             if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json([
-                            'error' => [
+                                'status' => false,
                                 'message' => 'invalid credential\'s',
-                            ],
                                 ], IlluminateResponse::HTTP_UNAUTHORIZED);
             }
         } catch (JWTException $e) {
             //Si existe algun error interno externo arroja error 500
             return response()->json([
-                        'error' => [
-                            'message' => 'no_se_pudo_crear_token',
-                        ],
+                            'status' => false,
+                            'message' => 'it was not possible to create the access token',                       
                             ], IlluminateResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         // si el login y el token es valido los retorno  :)
         return response()->json([
-                    'success' => [
-                        'message' => 'token_generado',
+                        'status' => true,
+                        'message' => 'token genereted',
                         'token' => $token,
-                    ]
         ]);
     }
 
