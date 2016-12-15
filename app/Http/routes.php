@@ -59,17 +59,20 @@ $app->group([
 });
 
 $app->group([
-    'middleware' => 'jwt.auth',
+    'middleware' => 'token',
 //    'prefix' => 'api/v1',
-//    'namespace' => 'App\Http\Controllers'
-    ],
-        function ($app) {
-            /* -------    Aplication  --------     */
+//    'namespace' => 'App\Http\Controllers',
+    ],function($app){
+        /* -------    Aplication  --------     */
             $app->get('/home', function(){
-                return view('home', ["token" => JWTAuth::getToken()]);
-            });
-        });
+                return view("home",["token", JWTAuth::getToken()]);
+            });            
+    });
 
 $app->get('/', function(){
-    return view('index', []);
+    return view('index', ["exceptions" =>""]);
+});
+
+$app->get('/index', function(){
+    return view('index', ["exceptions" =>""]);
 });

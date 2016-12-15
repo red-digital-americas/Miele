@@ -2,9 +2,9 @@
 <html>
     <head>
         <title>Miele</title>
-        <link rel="stylesheet" href="apis/bootstrap/css/bootstrap.css"/>
+        <link rel="stylesheet" href="/apis/bootstrap/css/bootstrap.css"/>
         <link rel="stylesheet" href="/css/Miele.css"/>
-        <script data-main="js/main" src="apis/require.js"></script>
+        <script data-main="/js/main" src="/apis/require.js"></script>
     </head>
     <body>
         <div class="login-logo">
@@ -62,6 +62,13 @@
     <script>
         require(['main'], function() {
             require(['login']);
+            require(['jquery'], function($){
+                $(document).ready(function(){
+                    var exceptions = "<?php echo $exceptions ?>";
+                    if(exceptions.length > 0)
+                    $('.login-alerts').show().append('<?php echo $exceptions?>');
+                 });
+            });
         });
     </script>
 </html>
