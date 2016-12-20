@@ -7,6 +7,8 @@
         <script data-main="/js/main" src="/apis/require.js"></script>
     </head>
     <body>
-        <h1>HOME</h1>
+        <footer>
+            <h1>footer</h1>
+        </footer>
     </body>
 </html>

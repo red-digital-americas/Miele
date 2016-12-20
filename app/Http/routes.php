@@ -65,7 +65,7 @@ $app->group([
     ],function($app){
         /* -------    Aplication  --------     */
             $app->get('/home', function(){
-                return view("home",["token", JWTAuth::getToken()]);
+                return view("home",["token" => JWTAuth::getToken()]);
             });            
     });
 

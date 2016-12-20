@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-define(['jquery', 'alerts', 'validator', 'exceptions', 'global'], function($, alerts, validator, exceptions, global){
+define(['jquery', 'alerts', 'validator', 'exceptions'], function($, alerts, validator, exceptions){
     var Login = function(){
         var loginContainer = $('#login-container');
         this.init = function(){
@@ -43,20 +43,21 @@ define(['jquery', 'alerts', 'validator', 'exceptions', 'global'], function($, al
         
         var loginRequest = function(){
             removeAlerts();
-            
             $.ajax({
                 method: "POST",
                 async: false,
                 cache: false,
                 data: loginContainer.closest('form').serialize(),
-                url: "auth/login",
+                url: document.location.origin+"/auth/login",
 //                contents: "json",
                 success: function(response, textStatus, jqXHR) {
                     manageResponse(response);
                 },
                 error: function( jqXHR, textStatus, errorThrown){
                     var response = jqXHR.responseJSON;
-                    
+                    if(response === undefined)
+                        return addAlerts(exceptions.INTERNAL_SERVER_ERROR+". without response");
+
                     if(response.message !== undefined)
                         addAlerts(response.message);
                     else
@@ -80,10 +81,8 @@ define(['jquery', 'alerts', 'validator', 'exceptions', 'global'], function($, al
             
         };
         
-        var login = function(response){            
-            global.token = response;
-            window.location.href = "home/?token="+response.token;
-
+        var login = function(response){           
+            window.location.href = document.location.origin+"/home/?token="+response.token;
         };
         
         var denyAccess = function(message){

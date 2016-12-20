@@ -20,3 +20,5 @@ composer.phar
 nbproject
 .rocketeer/
 tests
+/apple-access_log
+/apple.com-error_log
