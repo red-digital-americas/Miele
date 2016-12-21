@@ -66,13 +66,17 @@ $app->group([
         /* -------    Aplication  --------     */
             $app->get('/home', function(){
                 return view("home",["token" => JWTAuth::getToken()]);
-            });            
+            });           
+            
+            $app->get('/surveys', function(){
+                return view('surveys', ["exceptions" =>""]);
+            });
     });
 
 $app->get('/', function(){
     return view('index', ["exceptions" =>""]);
 });
 
-$app->get('/index', function(){
-    return view('index', ["exceptions" =>""]);
+$app->get('/login', function(){
+    return view('login', ["exceptions" =>""]);
 });

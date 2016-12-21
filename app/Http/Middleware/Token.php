@@ -32,17 +32,17 @@ class Token {
 
         try {
             if (!$user = JWTAuth::parseToken()->authenticate())
-                return view('index', ['exceptions' => 'user_not_found']);
+                return view('login', ['exceptions' => 'user_not_found']);
         } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-            return view('index', ['exceptions' => 'token_expired']);
+            return view('login', ['exceptions' => 'token_expired']);
         } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-            return view('index', ['exceptions' => 'token_invalid']);
+            return view('login', ['exceptions' => 'token_invalid']);
         } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
-            return view('index', ['exceptions' => 'token_absent']);
+            return view('login', ['exceptions' => 'token_absent']);
         } catch (Tymon\JWTAuth\Exceptions\InvalidClaimException $e) {
-            return \redirect('index', ['exceptions' => 'token_absent'], $e->getStatusCode());
+            return \redirect('login', ['exceptions' => 'token_absent'], $e->getStatusCode());
         } catch (\Exception $e) {
-            return view('index', ["exceptions" => "invalid token"]);
+            return view('login', ["exceptions" => "invalid token"]);
         }
 
         return $next($request);

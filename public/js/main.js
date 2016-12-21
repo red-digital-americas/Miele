@@ -4,7 +4,7 @@ require.config({
     baseUrl: '../',
     paths: {
         jquery: 'apis/jquery-3.1.1.min',
-        bootstrapjs: 'apis/bootstrap/js/bootstrap.min',
+        bootstrap: 'apis/bootstrap/js/bootstrap.min',
         login: 'js/login',
         alerts: 'js/Alerts',
         validator: 'js/Validator',
@@ -14,6 +14,6 @@ require.config({
         jquery: {
             exports: 'jQuery'
         },
-        "bootstrapjs": {"deps": ['jquery']}
+        "bootstrap": {"deps": ['jquery']}
     }
 });
