@@ -8,7 +8,9 @@ require.config({
         login: 'js/login',
         alerts: 'js/Alerts',
         validator: 'js/Validator',
-        exceptions: 'js/Exceptions'
+        exceptions: 'js/Exceptions',
+        menu: 'js/Menu',
+        home: 'js/Home'
     },
     shim: {
         jquery: {
