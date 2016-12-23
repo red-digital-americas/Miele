@@ -1,13 +1,24 @@
 
-define(['jquery'], function($) {
+define(['jquery', 'menu'], function($, menu) {
     $(document).ready(function() {
-
+        menu.init({
+            buttonSelector: "menu-toggle",
+            pageWrapper: "pageWrapper",
+            brandTitle: "Miele",
+            options: [
+                {
+                    title: "Home"
+                },
+                {
+                    title: "Cerrar Sesión"
+                }
+            ]
+        });
     });
-
 
     var Home = function() {
         this.init = function(token) {
-            $(window).on('orientationchange',resizeWrapper);
+            $(window).on('orientationchange', resizeWrapper);
 
             $('.container').css({width: $(window).width()});
             $('.productos-content').height($(window).height());
@@ -20,7 +31,6 @@ define(['jquery'], function($) {
         };
 
         var resizeWrapper = function() {
-            console.log("resizeWrapper");
             $('.container').css({width: $(window).width()});
             $('.productos-content').height($(window).height());
             $('.encuestas-content').height($(window).height());

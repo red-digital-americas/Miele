@@ -8,13 +8,13 @@ and open the template in the editor.
     Author     : danielunag
 */
 
-.home-wrapper{
+/*.home-wrapper{
     width: 100%;
     margin: 0;
     padding: 0;
-}
+}*/
 
-.home-wrapper .container{
+.container{
     margin: 0px;
     padding: 0px;
 }

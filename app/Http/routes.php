@@ -73,6 +73,10 @@ $app->group([
             });
     });
 
+$app->get('/menu', function(){
+    return view('menu', ["exceptions" =>""]);
+});
+
 $app->get('/', function(){
     return view('index', ["exceptions" =>""]);
 });
