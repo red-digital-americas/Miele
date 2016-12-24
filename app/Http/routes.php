@@ -53,7 +53,7 @@ $app->group([
    
     /* ----------   Token   ----------     */
     $app->get('/auth/refresh', 'App\Http\Controllers\Auth\AuthController@getRefresh');
-    $app->delete('/auth/invalidate', 'App\Http\Controllers\Auth\AuthController@deleteInvalidate');
+    $app->post('/auth/invalidate', 'App\Http\Controllers\Auth\AuthController@deleteInvalidate');
     
     
 });

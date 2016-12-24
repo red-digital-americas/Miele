@@ -1,6 +1,7 @@
 
 define(['jquery'], function($) {
     var Menu = function() {
+        var urlBase = document.location.origin;
         var options = {};
         /**
          * 
@@ -40,12 +41,32 @@ define(['jquery'], function($) {
             var ul = buildRoot();
 
             $(options.options).each(function() {
-                var li = $('<li>').append('<a href="#">' + this.title + '</a>');
+                var li = buildList(this);
                 ul.append(li);
             });
 
             div.append(ul);
             options.pageWrapper.append(div);
+        };
+
+        var buildList = function(option) {
+            var url = urlBase;
+            var params = "?";
+//            if (option.url !== undefined) {
+//                url = option.url;
+//                if (option.params !== undefined)
+//                    for (var key in option.params) {
+//                        params += key + "=" + option.params[key]+"&";
+//                    }
+//            }
+
+            var li = $('<li>').append('<a href="#">' + option.title + '</a>');
+            if (option.onclick !== undefined)
+                li.click(function() {
+                    onclick(option.onclick);
+                });
+
+            return li;
         };
 
         var buildRoot = function() {
@@ -57,6 +78,57 @@ define(['jquery'], function($) {
         var setBrand = function(ul) {
             var brand = $('<li>', {class: "sidebar-brand"}).append('<a href="#">' + options.brandTitle + '</a>');
             return ul.append(brand);
+        };
+
+        var onclick = function(option) {
+            if (option.ajax === undefined)
+                return 0;
+
+            var ajax = option.ajax;
+            if (ajax.method === undefined)
+                ajax.method = "POST";
+            if (ajax.type === undefined)
+                ajax.type = true;
+            if (ajax.cache === undefined)
+                ajax.cache = false;
+            if (ajax.params === undefined)
+                ajax.params = {};
+
+            $.ajax({
+                method: ajax.method,
+                async: ajax.type,
+                cache: ajax.cache,
+                data: ajax.params,
+                url: getUrl(ajax.url),
+//                contents: "json",
+                success: function(response, textStatus, jqXHR) {
+                    if (typeof ajax.success !== undefined)
+                        ajax.success(response, textStatus, jqXHR);
+//                    manageResponse(response);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    if (typeof ajax.error !== undefined)
+                        ajax.error(jqXHR, textStatus, errorThrown);
+//                    var response = jqXHR.responseJSON;
+//                    if(response === undefined)
+//                        return addAlerts(exceptions.INTERNAL_SERVER_ERROR+". without response");
+//
+//                    if(response.message !== undefined)
+//                        addAlerts(response.message);
+//                    else
+//                        addAlerts(response.responseText);
+                }
+            });
+        };
+
+        var getUrl = function(url) {
+            if (url === undefined)
+                return "";
+
+            if (url.charAt(0) === "/")
+                return urlBase + url.substring(0, url.length - 1);
+            
+            return urlBase + url;
         };
     };
 
