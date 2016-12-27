@@ -19,6 +19,5 @@ composer.phar
 /nbproject/private/
 nbproject
 .rocketeer/
-tests
 /apple-access_log
 /apple.com-error_log
