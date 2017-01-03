@@ -3,8 +3,8 @@
     <head>
         <title>Miele</title>
         <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
-
         <link rel="stylesheet" href="/apis/bootstrap/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="/apis/bootstrap3-dialog/dist/css/bootstrap-dialog.css"/>
         <link rel="stylesheet" href="/css/menu.css"/>
         <link rel="stylesheet" href="/css/Home.css"/>
         <script data-main="/js/main" src="/apis/require.js"></script>
@@ -38,7 +38,7 @@
     <script>
         require(['main'], function() {
             require(['jquery', 'bootstrap', 'menu', 'home'], function($, bootstrap, menu, home) {
-                home.init("<?php echo $token ?>");
+                home.init();
             });
         });
     </script>

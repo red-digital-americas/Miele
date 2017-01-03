@@ -8,6 +8,6 @@
         <script data-main="/js/main" src="/apis/require.js"></script>
     </head>
     <body>
-        
+        <h1>Productos</h1>
     </body>
 </html>

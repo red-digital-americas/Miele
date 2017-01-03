@@ -1,5 +1,5 @@
 
-define(['jquery'], function($) {
+define(['jquery', 'exceptions'], function($, e) {
     var Menu = function() {
         var urlBase = document.location.origin;
         var options = {};
@@ -50,17 +50,8 @@ define(['jquery'], function($) {
         };
 
         var buildList = function(option) {
-            var url = urlBase;
-            var params = "?";
-//            if (option.url !== undefined) {
-//                url = option.url;
-//                if (option.params !== undefined)
-//                    for (var key in option.params) {
-//                        params += key + "=" + option.params[key]+"&";
-//                    }
-//            }
-
             var li = $('<li>').append('<a href="#">' + option.title + '</a>');
+            
             if (option.onclick !== undefined)
                 li.click(function() {
                     onclick(option.onclick);
@@ -93,30 +84,23 @@ define(['jquery'], function($) {
                 ajax.cache = false;
             if (ajax.params === undefined)
                 ajax.params = {};
-
+            
             $.ajax({
                 method: ajax.method,
                 async: ajax.type,
                 cache: ajax.cache,
                 data: ajax.params,
-                url: getUrl(ajax.url),
+                url: getUrl(ajax.url)+"?"+$.param(ajax.params),
 //                contents: "json",
                 success: function(response, textStatus, jqXHR) {
-                    if (typeof ajax.success !== undefined)
-                        ajax.success(response, textStatus, jqXHR);
-//                    manageResponse(response);
+                    if (typeof ajax.success === "function")
+                        return ajax.success(response, textStatus, jqXHR);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    if (typeof ajax.error !== undefined)
-                        ajax.error(jqXHR, textStatus, errorThrown);
-//                    var response = jqXHR.responseJSON;
-//                    if(response === undefined)
-//                        return addAlerts(exceptions.INTERNAL_SERVER_ERROR+". without response");
-//
-//                    if(response.message !== undefined)
-//                        addAlerts(response.message);
-//                    else
-//                        addAlerts(response.responseText);
+                    if (typeof ajax.error === 'function')
+                        return ajax.error(jqXHR, textStatus, errorThrown);
+
+                    e.error(jqXHR.statusText+" - "+jqXHR.status, jqXHR.responseText);
                 }
             });
         };
@@ -124,11 +108,8 @@ define(['jquery'], function($) {
         var getUrl = function(url) {
             if (url === undefined)
                 return "";
-
-            if (url.charAt(0) === "/")
-                return urlBase + url.substring(0, url.length - 1);
             
-            return urlBase + url;
+            return  (url.charAt(0) === "/")?  (urlBase + url):  urlBase + "/" + url;
         };
     };
 

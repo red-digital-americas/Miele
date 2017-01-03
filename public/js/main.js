@@ -6,16 +6,19 @@ require.config({
         jquery: 'apis/jquery-3.1.1.min',
         bootstrap: 'apis/bootstrap/js/bootstrap.min',
         login: 'js/login',
-        alerts: 'js/Alerts',
-        validator: 'js/Validator',
-        exceptions: 'js/Exceptions',
-        menu: 'js/Menu',
-        home: 'js/Home'
+        alerts: 'js/alerts',
+        validator: 'js/validator',
+        'bootstrap-dialog': 'apis/bootstrap3-dialog/dist/js/bootstrap-dialog.min',
+        exceptions: 'js/exceptions',
+        index: 'js/index',
+        menu: 'js/menu',
+        home: 'js/home'
     },
     shim: {
         jquery: {
             exports: 'jQuery'
         },
-        "bootstrap": {"deps": ['jquery']}
+        "bootstrap": {"deps": ['jquery']},
+        'bootstrap-dialog': ['jquery','bootstrap']
     }
 });

@@ -52,9 +52,8 @@ $app->group([
     $app->post("surveysubject/delete", "api\\v1\SurveySubjectController@delete");
    
     /* ----------   Token   ----------     */
-    $app->get('/auth/refresh', 'App\Http\Controllers\Auth\AuthController@getRefresh');
-    $app->post('/auth/invalidate', 'App\Http\Controllers\Auth\AuthController@deleteInvalidate');
-    
+    $app->get('/auth/refresh', 'Auth\AuthController@getRefresh');
+    $app->post('/auth/invalidate', 'Auth\AuthController@deleteInvalidate');
     
 });
 
@@ -70,6 +69,10 @@ $app->group([
             
             $app->get('/surveys', function(){
                 return view('surveys', ["exceptions" =>""]);
+            });
+            
+            $app->get('/products', function(){
+                return view('products', ["exceptions" =>""]);
             });
     });
 
