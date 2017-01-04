@@ -1,5 +1,5 @@
 
-define(['jquery', 'menu', 'exceptions'], function($, menu, e) {
+define(['jquery', 'menu', 'exceptions', 'system'], function($, menu, e, system) {
     var Home = function() {
         var token = null;
 
@@ -66,27 +66,10 @@ define(['jquery', 'menu', 'exceptions'], function($, menu, e) {
                     }
                 }
             };
-        };
-        
-        /**
-         * Obtiene un parámetro específico de la url actual
-         * @param {type} sParam
-         * @returns {HomeL#2.Home.getUrlParameter.sParameterName|Boolean}
-         */
-        var getUrlParameter = function(sParam) {
-            var pageUrl = decodeURIComponent(window.location.search.substring(1)), sURLVariables = pageUrl.split('&'), sParameterName, i;
-
-            for (i = 0; i < sURLVariables.length; i++) {
-                sParameterName = sURLVariables[i].split('=');
-
-                if (sParameterName[0] === sParam) {
-                    return sParameterName[1] === undefined ? true : sParameterName[1];
-                }
-            }
-        };
+        };        
         
         var setToken = function() {
-            token = getUrlParameter("token");
+            token = system.getUrlParameter("token");
         };        
     };
 

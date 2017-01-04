@@ -10,9 +10,11 @@ require.config({
         validator: 'js/validator',
         'bootstrap-dialog': 'apis/bootstrap3-dialog/dist/js/bootstrap-dialog.min',
         exceptions: 'js/exceptions',
+        system: 'js/system',
         index: 'js/index',
         menu: 'js/menu',
-        home: 'js/home'
+        home: 'js/home',
+        survey: 'js/surveys'
     },
     shim: {
         jquery: {

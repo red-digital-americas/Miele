@@ -68,11 +68,11 @@ $app->group([
             });           
             
             $app->get('/surveys', function(){
-                return view('surveys', ["exceptions" =>""]);
+                return view('surveys', ["exceptions" =>"", "token" => JWTAuth::getToken()]);
             });
             
             $app->get('/products', function(){
-                return view('products', ["exceptions" =>""]);
+                return view('products', ["exceptions" =>"", "token" => JWTAuth::getToken()]);
             });
     });
 
