@@ -89,12 +89,12 @@ class CatSurveyTypeController extends Api{
         return catSurveyType::find($id);
     }
         
-    private function setValuesRestrictedOfCreate($survey){
+    function setValuesRestrictedOfCreate($survey){
         $survey->created_by = $this->userLogged->id;
         return $survey->save();
     }
      
-    private function setValuesRestrictedUpdate($survey){
+    function setValuesRestrictedUpdate($survey){
         $survey->updated_by = $this->userLogged->id;
         return $survey->save();
     }

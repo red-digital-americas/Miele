@@ -8,39 +8,39 @@
         <link rel="stylesheet" href="/apis/bootstrap3-dialog/dist/css/bootstrap-dialog.css"/>
         <link rel="stylesheet" href="/css/menu.css"/>
         <link rel="stylesheet" href="/css/surveys.css"/>
+        <link rel="stylesheet" href="/apis/font-awesome/css/font-awesome.min.css"/>
         <script data-main="/js/main" src="/apis/require.js"></script>
     </head>
     <body>
         <div class="background-surveys"></div>
         <div id="pageWrapper">
-                <div class="searcher-content">
-                    <div class="navbar">
-                        <div class="container">
-                            <div class="navbar-header">
-                                <span class="navbar-brand btn-menu glyphicon glyphicon-menu-hamburger" id="menu-toggle"></span>
-                            </div>
-                            <div class="navbar-collapse collapse">
-                                <form class="navbar-form">
-                                    <div class="form-group" style="display:inline;">
-                                        <div class="input-group" style="display:table;">
-                                            <span class="input-group-addon" style="width:1%;"><span class="glyphicon glyphicon-search"></span></span>
-                                            <input class="form-control" name="search" placeholder="Search Here" autocomplete="off" autofocus="autofocus" type="text">
-                                        </div>
-                                    </div>
-                                </form>
-
-                            </div><!--/.nav-collapse -->
+            <div class="searcher-content">
+                <div class="navbar">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <span class="navbar-brand btn-menu glyphicon glyphicon-menu-hamburger" id="menu-toggle"></span>
                         </div>
+                        <div class="navbar-collapse collapse">
+                            <form class="navbar-form">
+                                <div class="form-group" style="display:inline;">
+                                    <div class="input-group" style="display:table;">
+                                        <span class="input-group-addon" style="width:1%;"><span class="glyphicon glyphicon-search"></span></span>
+                                        <input class="form-control" name="search" placeholder="Search" autocomplete="off" autofocus="autofocus" type="text">
+                                        <span class="input-group-addon" style="width:1%;"><span class="fa fa-microphone fa-lg"></span></span> 
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div><!--/.nav-collapse -->
                     </div>
                 </div>
-                <div class="boxes-content">
-                    <div class="col-sm-12" id="boxContent"></div>
-                </div>
-
+            </div>
+            <div class="boxes-content">
+                <div class="col-sm-12" id="boxContent"></div>
+            </div>
         </div>
-
-
     </body>
+
     <script>
         require(['main'], function() {
             require(['survey'], function(home) {

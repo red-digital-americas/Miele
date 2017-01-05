@@ -71,31 +71,34 @@ class CreateSchema extends Migration {
             $table->foreign('idRole')->references('id')->on('mst_Roles');
         });
 
-        Schema::create('mst_Surveys', function (Blueprint $table) {
-            $table->increments('id')                    ->nullable(false);
-            $table->string('name', 100)                 ->nullable(false);
-            $table->string('welcome_text', 255)         ->nullable();
-            $table->string('finish_text', 255)          ->nullable();
-            $table->boolean('anon')->nullable(false)    ->default(0);
-            $table->timestamp('created_at')             ->nullable(false);
-            $table->integer('created_by')               ->nullable(false);
-            $table->integer('updated_by')               ->nullable();
-            $table->timestamp('updated_at')             ->nullable();
-            $table->boolean('status')                   ->default(1);
-        });
-
         Schema::create('cat_SurveyType', function (Blueprint $table) {
             $table->increments('id')                    ->nullable(false);
             $table->string('name', 100)                 ->nullable(false);
+            $table->string('icon')                      ->nullable(false);
             $table->timestamp('created_at')             ->nullable(false);
             $table->integer('created_by')               ->nullable(false);
             $table->integer('updated_by')               ->nullable();
             $table->timestamp('updated_at')             ->nullable();
             $table->boolean('status')                   ->default(1);
             
-            $table->foreign('id')->references('id')->on('mst_Surveys');
+//            $table->foreign('id')->references('id')->on('mst_Surveys');
         });
-
+        
+        Schema::create('mst_Surveys', function (Blueprint $table) {
+            $table->increments('id')                    ->nullable(false);
+            $table->string('name', 100)                 ->nullable(false);
+            $table->string('welcome_text', 255)         ->nullable();
+            $table->string('finish_text', 255)          ->nullable();
+            $table->integer('idSurveyType')             ->unsigned()->nullable(false);
+            $table->boolean('anon')->nullable(false)    ->default(0);
+            $table->timestamp('created_at')             ->nullable(false);
+            $table->integer('created_by')               ->nullable(false);
+            $table->integer('updated_by')               ->nullable();
+            $table->timestamp('updated_at')             ->nullable();
+            $table->boolean('status')                   ->default(1);
+            
+            $table->foreign('idSurveyType')->references('id')->on('cat_SurveyType');
+        });
         Schema::create('mst_Questions', function (Blueprint $table) {
             $table->increments('id')                    ->nullable(false);
             $table->string('question', 255)             ->nullable(false);
@@ -272,16 +275,15 @@ class CreateSchema extends Migration {
         if (Schema::hasTable('cat_AnswerType')) 
             Schema::drop('cat_AnswerType');
         
-        if (Schema::hasTable('cat_SurveyType')) 
-            Schema::drop('cat_SurveyType');
         
         if (Schema::hasTable('mst_Questions')) 
             Schema::drop('mst_Questions');
         
         if (Schema::hasTable('mst_Surveys')) 
             Schema::drop('mst_Surveys');
-
-
+        
+        if (Schema::hasTable('cat_SurveyType')) 
+            Schema::drop('cat_SurveyType');
         /*      --- Survey System ---       */
         if (Schema::hasTable('mst_Media')) 
             Schema::drop('mst_Media');

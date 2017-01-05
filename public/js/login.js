@@ -55,6 +55,7 @@ define(['jquery', 'alerts', 'validator', 'exceptions'], function($, alerts, vali
                 },
                 error: function( jqXHR, textStatus, errorThrown){
                     var response = jqXHR.responseJSON;
+                    $('#inputPassword').val('');
                     if(response === undefined)
                         return addAlerts(exceptions.INTERNAL_SERVER_ERROR+". without response");
 
@@ -86,6 +87,7 @@ define(['jquery', 'alerts', 'validator', 'exceptions'], function($, alerts, vali
         };
         
         var denyAccess = function(message){
+            $('#inputPassword').val('');
             addAlerts(message);
         };
         

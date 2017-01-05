@@ -35,38 +35,11 @@ define(['jquery', 'menu', 'exceptions', 'system'], function($, menu, e, system) 
                     pageWrapper: "pageWrapper",
                     brandTitle: "Miele",
                     options: [
-                        closeSessionOption()
+                        system.menu.option.closeSessionOption(token)
                     ]
                 });
             });
-        };
-        
-        /**
-         * Cierra sesión
-         * @returns {HomeL#2.Home.closeSessionOption.HomeAnonym$4}
-         */
-        var closeSessionOption = function() {
-            return {
-                title: "Cerrar Sesión",
-                onclick: {
-                    ajax: {
-                        url: "/api/v1/auth/invalidate",
-                        params: {"token": token},
-                        method: "POST",
-                        async: false,
-                        success: function(response, textStatus, jqXHR) {
-                            if(typeof response !== "object")
-                                e.error(response);
-                            
-                            if(response.status)
-                                window.location.href = document.location.origin+"/login/";
-                            else
-                                e.error("Error", response.message);
-                        }
-                    }
-                }
-            };
-        };        
+        };    
         
         var setToken = function() {
             token = system.getUrlParameter("token");

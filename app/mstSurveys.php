@@ -15,7 +15,11 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
 class mstSurveys extends Model implements AuthenticatableContract, AuthorizableContract{
     use Authenticatable, Authorizable;
-
+    
+    public function surveyType()
+    {
+        return $this->hasMany('App\catSurveyType', 'id' ,'idSurveyType');
+    }
     /**
      * The attributes that are mass assignable.
      *

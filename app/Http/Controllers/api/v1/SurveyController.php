@@ -41,7 +41,10 @@ class SurveyController extends Api{
     }
         
     public function index(){
-        $surveys = mstSurveys::all()->where("status", 1);
+        $surveys = mstSurveys::whereHas('surveyType', function($surveyType){
+            $surveyType->where("status", 1);
+        })->with("surveyType")->get();
+        
         return response()->json($surveys);
     }
     
@@ -65,7 +68,7 @@ class SurveyController extends Api{
             IlluminateResponse::HTTP_BAD_REQUEST]);
     }
     
-    private function setValuesRestrictedOfCreate($survey){
+    function setValuesRestrictedOfCreate($survey){
         $survey->created_by = $this->userLogged->id;
         return $survey->save();
     }
@@ -111,12 +114,12 @@ class SurveyController extends Api{
             return response()->json (["status" => false, "message" => SystemMessages::SYSTEM_ERROR_ACTION]);
     }
     
-    private function setValuesRestrictedUpdate($survey){
+    function setValuesRestrictedUpdate($survey){
         $survey->updated_by = $this->userLogged->id;
         return $survey->save();
     }
     
-    private function getSurveyById($id){
+    function getSurveyById($id){
         return mstSurveys::find($id);
     }
     

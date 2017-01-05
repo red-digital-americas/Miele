@@ -72,6 +72,9 @@ define(['jquery', 'exceptions'], function($, e) {
         };
 
         var onclick = function(option) {
+            if(typeof option === "function")
+                return option();
+            
             if (option.ajax === undefined)
                 return 0;
 

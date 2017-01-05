@@ -26,3 +26,78 @@ and open the template in the editor.
     top: 80px;
     /*position: relative;*/
 }
+
+.searcher-content{
+    margin-top: 30px;
+}
+
+.container{
+    margin-left: 20px;
+}
+
+.glyphicon-search{
+    color: #E60000;
+}
+
+.input-group-addon{
+    background-color: transparent;
+    border-radius: 22px;
+    border-right: none;
+}
+
+.form-control{
+    background-color: transparent;
+    border-radius: 22px;
+    border-left: none;
+    border-right: none;
+}
+
+.navbar-collapse{
+    padding-left: 100px;
+}
+
+.box{
+    margin-top: 32px;
+    width: 100%;
+    height: 325px;
+    position: relative;
+    background-color: #D7D7D7;
+}
+
+.box .survey-type-title{
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px;
+}
+
+.box .survey-title{
+    width: 100%;
+    height: 80px;
+    bottom: 0px;
+    position: absolute;
+    background-color: #E60000;
+    color: white;
+    font-size: 19px;
+    padding: 10px;
+}
+
+.box .surveyType-icon{
+    position: absolute;
+    width: 40%;
+    height: 40%;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.box .button-play{
+    position: absolute;
+    bottom: 90px;
+    right: 20px;
+}
+
+.box .surveyType-icon img{
+
+}
