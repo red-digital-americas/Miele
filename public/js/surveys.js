@@ -36,12 +36,12 @@ define(['jquery', 'system', 'menu', 'exceptions'], function($, system, menu, e) 
 
         var buildBox = function(survey) {
             var type = $('<div>', {class: "survey-type-title"}).append((survey.survey_type[0] !== undefined) ? survey.survey_type[0].name: "");
-            var name = $('<div>', {class: "survey-title"}).append(survey.name);
+            var name = $('<div>', {class: "survey-title"}).css({"background-color": (survey.survey_type[0] !== undefined) ? survey.survey_type[0].color: "white"}).append(survey.name);
             var icon = $('<div>', {class: "surveyType-icon"}).append($('<img>', {src: (survey.survey_type[0] !== undefined) ? survey.survey_type[0].icon: ""}));
             var button = $('<div>', {class: "button-play"}).append($('<img>', {src: "/img/play-button.png"}));
             var box = $('<div>', {class: "box"}).append(type).append(icon).append(button).append(name);
             
-            return $('<div>', {class: "col-sm-4"}).append(box);
+            return $('<div>', {class: "col-sm-4 box-content"}).append(box);
         };
 
         /**

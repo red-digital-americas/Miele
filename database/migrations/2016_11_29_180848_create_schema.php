@@ -75,6 +75,7 @@ class CreateSchema extends Migration {
             $table->increments('id')                    ->nullable(false);
             $table->string('name', 100)                 ->nullable(false);
             $table->string('icon')                      ->nullable(false);
+            $table->string('color')                     ->nullable(false);
             $table->timestamp('created_at')             ->nullable(false);
             $table->integer('created_by')               ->nullable(false);
             $table->integer('updated_by')               ->nullable();

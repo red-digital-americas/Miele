@@ -12,8 +12,8 @@
         <script data-main="/js/main" src="/apis/require.js"></script>
     </head>
     <body>
-        <div class="background-surveys"></div>
         <div id="pageWrapper">
+        <div class="background-surveys"></div>
             <div class="searcher-content">
                 <div class="navbar">
                     <div class="container">
@@ -35,15 +35,13 @@
                     </div>
                 </div>
             </div>
-            <div class="boxes-content">
-                <div class="col-sm-12" id="boxContent"></div>
-            </div>
+            <div class="col-sm-12 boxes-content" id="boxContent"></div>
         </div>
     </body>
 
     <script>
-        require(['main'], function() {
-            require(['survey'], function(home) {
+        require(['main'], function () {
+            require(['survey'], function (home) {
                 home.init();
             });
         });

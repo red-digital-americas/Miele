@@ -19,21 +19,27 @@ and open the template in the editor.
 
 .searcher-content{
     top: 0px;
-    height: 80px;
-    /*position: relative;*/
-}
-.boxes-content{
-    top: 80px;
-    /*position: relative;*/
-}
-
-.searcher-content{
+    height: 51px;
     margin-top: 30px;
 }
-
-.container{
-    margin-left: 20px;
+.boxes-content{
+    /*position: relative;*/
+    padding-left: 24px;
+    padding-right: 40px;
+    overflow-y: auto;
+    padding-bottom: 70px;
 }
+
+.box-content{
+    padding-left: 20px;
+    padding-right: 0px;
+}
+
+
+
+/*.container{
+    margin-left: 20px;
+}*/
 
 .glyphicon-search{
     color: #E60000;
