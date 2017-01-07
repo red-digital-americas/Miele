@@ -25,8 +25,7 @@
                                 <div class="form-group" style="display:inline;">
                                     <div class="input-group" style="display:table;">
                                         <span class="input-group-addon" style="width:1%;"><span class="glyphicon glyphicon-search"></span></span>
-                                        <input class="form-control" name="search" placeholder="Search" autocomplete="off" autofocus="autofocus" type="text">
-                                        <span class="input-group-addon" style="width:1%;"><span class="fa fa-microphone fa-lg"></span></span> 
+                                        <input class="form-control" id="formSearch"  placeholder="Search" autocomplete="off" autofocus="autofocus" type="text">
                                     </div>
                                 </div>
                             </form>

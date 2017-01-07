@@ -6,10 +6,12 @@ define(['jquery', 'system', 'menu', 'exceptions'], function($, system, menu, e) 
             setTokenValue();
             resizeContent();
             buildSurveyBoxes();
+            buildSurveyBoxes();
+            engineSearch();
         };
 
         var resizeContent = function() {
-            $('#boxContent').height($(window).height() - 80);
+            $('#boxContent').height($(window).height() - 150);
             buildMenu();
         };
 
@@ -35,13 +37,15 @@ define(['jquery', 'system', 'menu', 'exceptions'], function($, system, menu, e) 
         };
 
         var buildBox = function(survey) {
-            var type = $('<div>', {class: "survey-type-title"}).append((survey.survey_type[0] !== undefined) ? survey.survey_type[0].name: "");
-            var name = $('<div>', {class: "survey-title"}).css({"background-color": (survey.survey_type[0] !== undefined) ? survey.survey_type[0].color: "white"}).append(survey.name);
-            var icon = $('<div>', {class: "surveyType-icon"}).append($('<img>', {src: (survey.survey_type[0] !== undefined) ? survey.survey_type[0].icon: ""}));
+            var surveyTypeData = (survey.survey_type === undefined) ? {} : survey.survey_type[0];
+
+            var type = $('<div>', {class: "survey-type-title"}).append(surveyTypeData.name);
+            var name = $('<div>', {class: "survey-title"}).css({"background-color": surveyTypeData.color}).append(survey.name);
+            var icon = $('<div>', {class: "surveyType-icon"}).append($('<img>', {src: surveyTypeData.icon}));
             var button = $('<div>', {class: "button-play"}).append($('<img>', {src: "/img/play-button.png"}));
             var box = $('<div>', {class: "box"}).append(type).append(icon).append(button).append(name);
-            
-            return $('<div>', {class: "col-sm-4 box-content"}).append(box);
+
+            return $('<div>', {class: "col-sm-4 box-content", surveyName: surveyTypeData.name}).append(box);
         };
 
         /**
@@ -67,6 +71,24 @@ define(['jquery', 'system', 'menu', 'exceptions'], function($, system, menu, e) 
                 }
             });
             return surveys;
+        };
+
+        var engineSearch = function() {
+            $('#formSearch').keyup(function() {
+                searchSurvey($.trim($(this).val()));
+            });
+        };
+
+        var searchSurvey = function(surveyName) {
+            var regex = new RegExp("(" + surveyName + ")", "ig");
+            $('.box-content').each(function() {
+                if (String(surveyName).length === 0) {
+                    $('.box-content').show();
+                    return false;
+                }
+
+                (String($(this).attr('surveyName')).search(regex) === -1) ? $(this).hide() : $(this).show();
+            });
         };
 
         var setTokenValue = function() {
