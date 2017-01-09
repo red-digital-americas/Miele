@@ -1,6 +1,6 @@
 <?php
 //this is the endpoint of auth
-$app->post('/auth/login', 'Auth\AuthController@postLogin');
+$app->post('/auth/login', ['middleware' => 'CatchAllOptionsRequestsProvider', 'uses' => 'Auth\AuthController@postLogin']);
 
 //this is an endpoint without auth
 $app->get('api/status', function (){
@@ -9,7 +9,7 @@ $app->get('api/status', function (){
 
 //these are endpoints that required auth
 $app->group([
-    'middleware' => 'jwt.auth',
+    'middleware' => ['jwt.auth', 'CatchAllOptionsRequestsProvider'],
     'prefix' => 'api/v1',
 //    'namespace' => 'App\Http\Controllers'
     ],
