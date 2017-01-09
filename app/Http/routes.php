@@ -56,34 +56,3 @@ $app->group([
     $app->post('/auth/invalidate', 'Auth\AuthController@deleteInvalidate');
     
 });
-
-$app->group([
-    'middleware' => 'token',
-//    'prefix' => 'api/v1',
-//    'namespace' => 'App\Http\Controllers',
-    ],function($app){
-        /* -------    Aplication  --------     */
-            $app->get('/home', function(){
-                return view("home",["token" => JWTAuth::getToken()]);
-            });           
-            
-            $app->get('/surveys', function(){
-                return view('surveys', ["exceptions" =>"", "token" => JWTAuth::getToken()]);
-            });
-            
-            $app->get('/products', function(){
-                return view('products', ["exceptions" =>"", "token" => JWTAuth::getToken()]);
-            });
-    });
-
-$app->get('/menu', function(){
-    return view('menu', ["exceptions" =>""]);
-});
-
-$app->get('/', function(){
-    return view('index', ["exceptions" =>""]);
-});
-
-$app->get('/login', function(){
-    return view('login', ["exceptions" =>""]);
-});
