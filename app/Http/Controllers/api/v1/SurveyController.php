@@ -42,7 +42,7 @@ class SurveyController extends Api{
         
     public function index(){
         $surveys = mstSurveys::whereHas('surveyType', function($surveyType){
-            $surveyType->where("status", 1);
+//            $surveyType->where("status", 1);
         })->with("surveyType")->get();
         
         return response()->json($surveys);

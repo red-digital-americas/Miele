@@ -41,9 +41,7 @@ class mstSurveys extends Model implements AuthenticatableContract, AuthorizableC
      */
     protected $hidden = [
         "created_by",
-        "created_at",
         "updated_at",
-        "updated_by",
-        "status"
+        "updated_by"
     ];
 }
