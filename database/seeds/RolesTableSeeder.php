@@ -13,6 +13,18 @@ class RolesTableSeeder extends Seeder{
             'name'          => env('ROLES_ADMIN_NAME'),
             'created_by'    => 1
         ]);
+        
+        DB::table('mst_Roles')->insert([
+            'id'         => 2,
+            'name'          => "userAdmin",
+            'created_by'    => 1
+        ]);
+        
+        DB::table('mst_Roles')->insert([
+            'id'         => 1,
+            'name'          => "userApp",
+            'created_by'    => 1
+        ]);
     }
 
 }
