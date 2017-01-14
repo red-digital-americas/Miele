@@ -21,7 +21,7 @@ class RolesTableSeeder extends Seeder{
         ]);
         
         DB::table('mst_Roles')->insert([
-            'id'         => 1,
+            'id'         => 3,
             'name'          => "userApp",
             'created_by'    => 1
         ]);

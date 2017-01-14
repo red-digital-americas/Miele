@@ -100,11 +100,23 @@ class CreateSchema extends Migration {
             
             $table->foreign('idSurveyType')->references('id')->on('cat_SurveyType');
         });
+        
+        Schema::create('cat_QuestionType', function (Blueprint $table) {
+            $table->increments('id')                    ->nullable(false);
+            $table->string('name', 255)                 ->nullable(false);
+            $table->timestamp('created_at')             ->nullable(false);
+            $table->integer('created_by')               ->nullable(false);
+            $table->integer('updated_by')               ->nullable();
+            $table->timestamp('updated_at')             ->nullable();
+            $table->boolean('status')                   ->nullable(false)->default(1);            
+        });
+        
         Schema::create('mst_Questions', function (Blueprint $table) {
             $table->increments('id')                    ->nullable(false);
             $table->string('question', 255)             ->nullable(false);
             $table->boolean('required')                 ->nullable(false)->default(0);
             $table->integer('idSurvey')                 ->unsigned()->nullable(false);
+            $table->integer('idQuestionType')           ->unsigned()->nullable(false);
             $table->timestamp('created_at')             ->nullable(false);
             $table->integer('created_by')               ->nullable(false);
             $table->integer('updated_by')               ->nullable();
@@ -112,6 +124,7 @@ class CreateSchema extends Migration {
             $table->boolean('status')                   ->default(1);
             
             $table->foreign('idSurvey')->references('id')->on('mst_Surveys');
+            $table->foreign('idQuestionType')->references('id')->on('cat_QuestionType');
         });
         
         Schema::create('cat_AnswerType', function (Blueprint $table) {
@@ -279,6 +292,9 @@ class CreateSchema extends Migration {
         
         if (Schema::hasTable('mst_Questions')) 
             Schema::drop('mst_Questions');
+        
+        if(Schema::hasTable('cat_QuestionType'))
+            Schema::drop('cat_QuestionType');
         
         if (Schema::hasTable('mst_Surveys')) 
             Schema::drop('mst_Surveys');
