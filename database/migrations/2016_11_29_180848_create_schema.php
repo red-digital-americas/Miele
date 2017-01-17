@@ -104,6 +104,7 @@ class CreateSchema extends Migration {
         Schema::create('cat_QuestionType', function (Blueprint $table) {
             $table->increments('id')                    ->nullable(false);
             $table->string('name', 255)                 ->nullable(false);
+            $table->string('icon', 255)                 ->nullable(false);
             $table->timestamp('created_at')             ->nullable(false);
             $table->integer('created_by')               ->nullable(false);
             $table->integer('updated_by')               ->nullable();

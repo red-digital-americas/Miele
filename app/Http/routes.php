@@ -50,6 +50,12 @@ $app->group([
     $app->post("surveysubject/create", "api\\v1\SurveySubjectController@create");
     $app->post("surveysubject/update", "api\\v1\SurveySubjectController@update");
     $app->post("surveysubject/delete", "api\\v1\SurveySubjectController@delete");
+    
+    /* --------- cat_QuestionType -------     */
+    $app->post("questionType/"      , "api\\v1\CatQuestionTypeController@index");
+    $app->post("questionType/create", "api\\v1\CatQuestionTypeController@create");
+    $app->post("questionType/update", "api\\v1\CatQuestionTypeController@update");
+    $app->post("questionType/delete", "api\\v1\CatQuestionTypeController@delete");
    
     /* ----------   Token   ----------     */
     $app->get('/auth/refresh', 'Auth\AuthController@getRefresh');
