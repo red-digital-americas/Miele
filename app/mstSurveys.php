@@ -15,7 +15,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
 class mstSurveys extends Model implements AuthenticatableContract, AuthorizableContract{
     use Authenticatable, Authorizable;
-    
+    public $table = 'mst_Surveys';
     public function surveyType()
     {
         return $this->hasMany('App\catSurveyType', 'id' ,'idSurveyType');
