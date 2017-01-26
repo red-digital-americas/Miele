@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 
 use Illuminate\Auth\Authenticatable;
@@ -9,13 +8,13 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
 /**
- * Description of QuestionType
+ * Description of catAnswerType
  *
  * @author danielunag
  */
-class catQuestionType extends Model implements AuthenticatableContract, AuthorizableContract {
+class catAnswerType extends Model implements AuthenticatableContract, AuthorizableContract {
 
-    public $table = "cat_QuestionType";
+    public $table = "cat_AnswerType";
 
     use Authenticatable,
         Authorizable;
@@ -27,8 +26,7 @@ class catQuestionType extends Model implements AuthenticatableContract, Authoriz
      */
     protected $fillable = [
         "name",
-        'icon',
-        "status"
+        "idQuestionType"
     ];
 
     /**
@@ -42,9 +40,5 @@ class catQuestionType extends Model implements AuthenticatableContract, Authoriz
         "updated_by",
         "status"
     ];
-
-    public function answerType() {
-        return $this->hasMany('App\catAnswerType', 'idQuestionType');
-    }
 
 }

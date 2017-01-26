@@ -29,6 +29,7 @@ class SurveyController extends Api{
             "welcome_text"  => "string|max:255",
             "finish_text"   => "string|max:255",
             "anon"          => "integer",
+            "questions"     => "array|min:1|required", 
         ]);
         
         $this->setArrayDelete([
@@ -42,17 +43,17 @@ class SurveyController extends Api{
         
     public function index(){
         $surveys = mstSurveys::whereHas('surveyType', function($surveyType){
-//            $surveyType->where("status", 1);
+            $surveyType->where("status", 1);
         })->with("surveyType")->get();
         
         return response()->json($surveys);
     }
     
-    public function create(Request $request){
+    public function create(Request $request){        
         if(!($validate = $this->validateRequest($request, "create")) == true)
             return $validate;
-        
-        return $this->createSurvey($request);
+        var_dump("valid");
+//        return $this->createSurvey($request);
     }
     
     private function createSurvey(Request $request){

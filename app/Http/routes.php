@@ -34,10 +34,10 @@ $app->group([
     $app->post("survey/update", "api\\v1\SurveyController@update");
     
     /* --------- cat surveys ---------     */
-    $app->post("catsurveystype/", "api\\v1\CatSurveyTypeController@index");
-    $app->post("catsurveystype/create", "api\\v1\CatSurveyTypeController@create");
-    $app->post("catsurveystype/update", "api\\v1\CatSurveyTypeController@update");
-    $app->post("catsurveystype/delete", "api\\v1\CatSurveyTypeController@delete");
+    $app->post("surveyType/", "api\\v1\CatSurveyTypeController@index");
+    $app->post("surveyType/create", "api\\v1\CatSurveyTypeController@create");
+    $app->post("surveyType/update", "api\\v1\CatSurveyTypeController@update");
+    $app->post("surveyType/delete", "api\\v1\CatSurveyTypeController@delete");
     
     /* -------- SurveyApplied --------     */
     $app->post("surveyapplied/"      , "api\\v1\SurveyAppliedController@index");

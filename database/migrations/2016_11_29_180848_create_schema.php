@@ -131,11 +131,14 @@ class CreateSchema extends Migration {
         Schema::create('cat_AnswerType', function (Blueprint $table) {
             $table->increments('id')                    ->nullable(false);
             $table->string('name', 45)                  ->nullable(false);
+            $table->integer('idQuestionType')           ->unsigned()->nullable(false);
             $table->timestamp('created_at')             ->nullable(false);
             $table->integer('created_by')               ->nullable(false);
             $table->integer('updated_by')               ->nullable();
             $table->timestamp('updated_at')             ->nullable();
             $table->boolean('status')                   ->default(1);
+            
+            $table->foreign('idQuestionType')->references('id')->on('cat_QuestionType');
         });
 
         Schema::create('mst_QuestionAnswers', function (Blueprint $table) {

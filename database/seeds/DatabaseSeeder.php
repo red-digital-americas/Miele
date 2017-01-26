@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
          $this->call('SurveyTypeTableSeeder');
          $this->call('SurveysTableSeeder');
          $this->call('QuestionTypeSeeder');
+         $this->call('AnswerTypeSeeder');
     }
 }

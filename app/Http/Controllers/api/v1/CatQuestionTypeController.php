@@ -35,7 +35,7 @@ class CatQuestionTypeController extends Api {
     }
 
     public function index() {
-        $catSurveys = catQuestionType::all()->where("status", 1);
+        $catSurveys = catQuestionType::with("answerType")->get();
         return response()->json($catSurveys);
     }
 
