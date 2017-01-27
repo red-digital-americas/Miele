@@ -71,19 +71,32 @@ class SurveyController extends Api{
         if(($newSurvey = mstSurveys::create($request->all()))){
             $this->setValuesRestrictedOfCreate($newSurvey);
             $questions = $request->get("questions");
-            foreach ($questions as $q){
-                $q['idSurvey'] = $newSurvey->id;
-                $question = mstQuestion::create($q);
-                if(isset($q['answers'])){
-                    $q['answers']['idQuestion'] = $question->id;
-                    mstQuestionAnswer::create($q['answers']);
-                }
-            }
+            $this->saveQuestion($newSurvey, $questions);
+            
             return response ()->json (["status" => true, "message" => "survey created", $newSurvey]);
         }
         else
             return response ()->json (["status" => false, "message" => SystemMessages::SYSTEM_ERROR_ACTION, 
             IlluminateResponse::HTTP_BAD_REQUEST]);
+    }
+    
+    private function saveQuestion($newSurvey, $questions){
+        foreach ($questions as $q){
+            $q['idSurvey'] = $newSurvey->id;
+            $question = mstQuestion::create($q);
+            $this->setValuesRestrictedOfCreate($question);
+            $this->saveQuestionAnswers($q, $question);
+        }
+    }
+    
+    private function saveQuestionAnswers($questionArray,$question){
+        if(isset($questionArray['answers'])){
+            foreach ($questionArray['answers'] as $ans){
+                $ans['idQuestion'] = $question->id;
+                $answer = mstQuestionAnswer::create($ans);
+                $this->setValuesRestrictedOfCreate($answer);
+            }
+        }
     }
     
     function setValuesRestrictedOfCreate($survey){
