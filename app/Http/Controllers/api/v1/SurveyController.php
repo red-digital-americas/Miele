@@ -19,32 +19,32 @@ class SurveyController extends Api{
     
     public function __construct() {
         $this->setArrayUpdate([
-            'id'                    => 'integer|required',
-            'name'                  => 'string|max:100|min:3',
-            "welcome_text"          => "string|max:255",
-            "finish_text"           => "string|max:255",
-            "anon"                  => "integer",
-            "reactivate"            => "integer"
+            'id'                            => 'integer|required',
+            'name'                          => 'string|max:100|min:3',
+            "welcome_text"                  => "string|max:255",
+            "finish_text"                   => "string|max:255",
+            "anon"                          => "integer",
+            "reactivate"                    => "integer"
         ]);
         
         $this->setArrayCreate([
-            'name'                  => 'string|required|max:100|min:3',
-            "welcome_text"          => "string|max:255",
-            "finish_text"           => "string|max:255",
-            "anon"                  => "integer",
-            "questions"             => "array|min:1|required",
-            "questions.*.text"      => "string|required",
-            "questions.*.idQuestionType"  => "integer|required",
-            "answers"               => "array",
-            "answers.*.text"        => "string|required",
-            "answers.*.idQuestion"  => "integer|required",
+            'name'                          => 'string|required|max:100|min:3',
+            "welcome_text"                  => "string|max:255",
+            "finish_text"                   => "string|max:255",
+            "anon"                          => "integer",
+            "questions"                     => "array|min:1|required",
+            "questions.*.text"              => "string|required",
+            "questions.*.idQuestionType"    => "integer|required",
+            "answers"                       => "array",
+            "answers.*.text"                => "string|required",
+            "answers.*.idQuestion"          => "integer|required",
         ]);
         
         $this->setArrayDelete([
-            'name'                  => 'string|required|max:100|min:3',
-            "welcome_text"          => "string|max:255",
-            "finish_text"           => "string|max:255",
-            "anon"                  => "integer",
+            'name'                          => 'string|required|max:100|min:3',
+            "welcome_text"                  => "string|max:255",
+            "finish_text"                   => "string|max:255",
+            "anon"                          => "integer",
         ]);
         parent::__construct();
     }
