@@ -1,4 +1,10 @@
 <?php
+/**
+ * Description of mstQuestion
+ *
+ * @author danielunag
+ */
+
 namespace App;
 
 use Illuminate\Auth\Authenticatable;
@@ -6,15 +12,9 @@ use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+class mstQuestionAnswer extends Model implements AuthenticatableContract, AuthorizableContract {
 
-/**
- * Description of catAnswerType
- *
- * @author danielunag
- */
-class catAnswerType extends Model implements AuthenticatableContract, AuthorizableContract {
-
-    public $table = "cat_AnswerType";
+    public $table = "mst_QuestionAnswers";
 
     use Authenticatable,
         Authorizable;
@@ -26,7 +26,8 @@ class catAnswerType extends Model implements AuthenticatableContract, Authorizab
      */
     protected $fillable = [
         "text",
-        "idQuestionType"
+        "idQuestion",
+        "status"
     ];
 
     /**

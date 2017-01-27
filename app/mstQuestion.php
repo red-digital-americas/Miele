@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * Description of mstQuestion
+ *
+ * @author danielunag
+ */
+
 namespace App;
 
 use Illuminate\Auth\Authenticatable;
@@ -7,14 +14,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-/**
- * Description of catAnswerType
- *
- * @author danielunag
- */
-class catAnswerType extends Model implements AuthenticatableContract, AuthorizableContract {
+class mstQuestion extends Model implements AuthenticatableContract, AuthorizableContract {
 
-    public $table = "cat_AnswerType";
+    public $table = "mst_Questions";
 
     use Authenticatable,
         Authorizable;
@@ -26,7 +28,9 @@ class catAnswerType extends Model implements AuthenticatableContract, Authorizab
      */
     protected $fillable = [
         "text",
-        "idQuestionType"
+        "idSurvey",
+        "idQuestionType",
+        "status"
     ];
 
     /**
@@ -40,5 +44,9 @@ class catAnswerType extends Model implements AuthenticatableContract, Authorizab
         "updated_by",
         "status"
     ];
+
+    public function questionAnswers() {
+        return $this->hasMany('App\catQuestionAnswers');
+    }
 
 }

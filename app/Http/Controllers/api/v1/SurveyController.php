@@ -4,6 +4,9 @@ namespace App\Http\Controllers\api\v1;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as IlluminateResponse;
 use App\mstSurveys;
+use App\catAnswerType;
+use App\mstQuestionAnswer;
+use App\mstQuestion;
 use App\Exceptions\SystemMessages;
 use App\Http\Controllers\api\v1\Api;
 
@@ -16,27 +19,32 @@ class SurveyController extends Api{
     
     public function __construct() {
         $this->setArrayUpdate([
-            'id'            => 'integer|required',
-            'name'          => 'string|max:100|min:3',
-            "welcome_text"  => "string|max:255",
-            "finish_text"   => "string|max:255",
-            "anon"          => "integer",
-            "reactivate"    => "integer"
+            'id'                    => 'integer|required',
+            'name'                  => 'string|max:100|min:3',
+            "welcome_text"          => "string|max:255",
+            "finish_text"           => "string|max:255",
+            "anon"                  => "integer",
+            "reactivate"            => "integer"
         ]);
         
         $this->setArrayCreate([
-            'name'          => 'string|required|max:100|min:3',
-            "welcome_text"  => "string|max:255",
-            "finish_text"   => "string|max:255",
-            "anon"          => "integer",
-            "questions"     => "array|min:1|required", 
+            'name'                  => 'string|required|max:100|min:3',
+            "welcome_text"          => "string|max:255",
+            "finish_text"           => "string|max:255",
+            "anon"                  => "integer",
+            "questions"             => "array|min:1|required",
+            "questions.*.text"      => "string|required",
+            "questions.*.idQuestionType"  => "integer|required",
+            "answers"               => "array",
+            "answers.*.text"        => "string|required",
+            "answers.*.idQuestion"  => "integer|required",
         ]);
         
         $this->setArrayDelete([
-            'name'          => 'string|required|max:100|min:3',
-            "welcome_text"  => "string|max:255",
-            "finish_text"   => "string|max:255",
-            "anon"          => "integer",
+            'name'                  => 'string|required|max:100|min:3',
+            "welcome_text"          => "string|max:255",
+            "finish_text"           => "string|max:255",
+            "anon"                  => "integer",
         ]);
         parent::__construct();
     }
@@ -52,17 +60,26 @@ class SurveyController extends Api{
     public function create(Request $request){        
         if(!($validate = $this->validateRequest($request, "create")) == true)
             return $validate;
-        var_dump("valid");
-//        return $this->createSurvey($request);
+
+        return $this->createSurvey($request);
     }
     
     private function createSurvey(Request $request){
-        if($this->getSurveyByName($request->get("name")) != NULL)
-            return response()->json (["status" => false, "message" => "already exists this survey name"]);
+//        if($this->getSurveyByName($request->get("name")) != NULL)
+//            return response()->json (["status" => false, "message" => "already exists this survey name"]);
         
         if(($newSurvey = mstSurveys::create($request->all()))){
             $this->setValuesRestrictedOfCreate($newSurvey);
-            return response ()->json (["status" => true, "message" => "survey created"]);
+            $questions = $request->get("questions");
+            foreach ($questions as $q){
+                $q['idSurvey'] = $newSurvey->id;
+                $question = mstQuestion::create($q);
+                if(isset($q['answers'])){
+                    $q['answers']['idQuestion'] = $question->id;
+                    mstQuestionAnswer::create($q['answers']);
+                }
+            }
+            return response ()->json (["status" => true, "message" => "survey created", $newSurvey]);
         }
         else
             return response ()->json (["status" => false, "message" => SystemMessages::SYSTEM_ERROR_ACTION, 

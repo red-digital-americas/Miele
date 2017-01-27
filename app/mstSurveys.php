@@ -30,6 +30,7 @@ class mstSurveys extends Model implements AuthenticatableContract, AuthorizableC
         "name",
         "welcome_text",
         "finish_text",
+        "idSurveyType",
         "anon",
         "status"
     ];
@@ -44,4 +45,13 @@ class mstSurveys extends Model implements AuthenticatableContract, AuthorizableC
         "updated_at",
         "updated_by"
     ];
+    
+//    public function saveMany($models)
+//    {
+//        foreach ($models as $model) {
+//            $this->save($model);
+//        }
+//
+//        return $models;
+//    }
 }

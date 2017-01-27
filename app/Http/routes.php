@@ -9,7 +9,7 @@ $app->get('api/status', function (){
 
 //these are endpoints that required auth
 $app->group([
-    'middleware' => ['jwt.auth', 'CatchAllOptionsRequestsProvider'],
+    'middleware' => ["CatchAllOptionsRequestsProvider", 'jwt.auth'],
     'prefix' => 'api/v1',
 //    'namespace' => 'App\Http\Controllers'
     ],

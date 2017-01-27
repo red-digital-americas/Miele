@@ -26,7 +26,7 @@ class catQuestionType extends Model implements AuthenticatableContract, Authoriz
      * @var array
      */
     protected $fillable = [
-        "name",
+        "text",
         'icon',
         "status"
     ];
