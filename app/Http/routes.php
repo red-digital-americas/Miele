@@ -60,5 +60,5 @@ $app->group([
     /* ----------   Token   ----------     */
     $app->get('/auth/refresh', 'Auth\AuthController@getRefresh');
     $app->post('/auth/invalidate', 'Auth\AuthController@deleteInvalidate');
-    
+        
 });

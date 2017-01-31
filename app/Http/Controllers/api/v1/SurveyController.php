@@ -49,10 +49,15 @@ class SurveyController extends Api{
         parent::__construct();
     }
         
-    public function index(){
-        $surveys = mstSurveys::whereHas('surveyType', function($surveyType){
-            $surveyType->where("status", 1);
-        })->with("surveyType")->get();
+    public function index(Request $request){
+        $surveys = null;
+        $idSurvey = $request->get("id");
+        if((int) $idSurvey > 0)
+            $surveys = mstSurveys::where("id", $idSurvey)->with("surveyType")->with("mstQuestions")->get();
+        else
+            $surveys = mstSurveys::whereHas('surveyType', function($surveyType){
+                $surveyType->where("status", 1);
+            })->with("surveyType")->with("mstQuestions")->get();
         
         return response()->json($surveys);
     }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Description of mstSurveys
  *
@@ -13,13 +14,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class mstSurveys extends Model implements AuthenticatableContract, AuthorizableContract{
-    use Authenticatable, Authorizable;
+class mstSurveys extends Model implements AuthenticatableContract, AuthorizableContract {
+
+    use Authenticatable,
+        Authorizable;
+
     public $table = 'mst_Surveys';
-    public function surveyType()
-    {
-        return $this->hasMany('App\catSurveyType', 'id' ,'idSurveyType');
-    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -45,13 +46,13 @@ class mstSurveys extends Model implements AuthenticatableContract, AuthorizableC
         "updated_at",
         "updated_by"
     ];
+
+    public function surveyType() {
+        return $this->hasMany('App\catSurveyType', 'id', 'idSurveyType');
+    }
     
-//    public function saveMany($models)
-//    {
-//        foreach ($models as $model) {
-//            $this->save($model);
-//        }
-//
-//        return $models;
-//    }
+    public function mstQuestions(){
+        return $this->hasMany('App\mstQuestion', 'idSurvey');
+    }
+
 }
