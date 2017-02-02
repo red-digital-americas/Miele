@@ -46,7 +46,11 @@ class mstQuestion extends Model implements AuthenticatableContract, Authorizable
     ];
 
     public function questionAnswers() {
-        return $this->hasMany('App\catQuestionAnswers');
+        return $this->hasMany('App\mstQuestionAnswer', 'idQuestion', 'id');
+    }
+    
+    public function catQuestionType() {
+        return $this->hasOne('App\catQuestionType', 'id', 'idQuestionType');
     }
 
 }

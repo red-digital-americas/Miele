@@ -50,14 +50,37 @@ class SurveyController extends Api{
     }
         
     public function index(Request $request){
-        $surveys = null;
+//        $surveys = null;
         $idSurvey = $request->get("id");
-        if((int) $idSurvey > 0)
-            $surveys = mstSurveys::where("id", $idSurvey)->with("surveyType")->with("mstQuestions")->get();
+        if((int) $idSurvey > 0){
+            $surveys = mstSurveys::
+                    where("id", $idSurvey)
+                    ->with("surveyType")->with([
+                        "mstQuestions" => function($subquery){
+                        $subquery->where("status", 1);
+                    }, 'mstQuestions.questionAnswers' => function($subquery){
+
+                    }, 'mstQuestions.catQuestionType' => function($subquery){
+
+                    },'mstQuestions.catQuestionType.answerType' => function($subquery){
+
+                    }
+                            
+                    ])->get();
+        }
         else
-            $surveys = mstSurveys::whereHas('surveyType', function($surveyType){
-                $surveyType->where("status", 1);
-            })->with("surveyType")->with("mstQuestions")->get();
+            $surveys = mstSurveys::with("surveyType")->with([
+                        "mstQuestions" => function($subquery){
+                        $subquery->where("status", 1);
+                    }, 'mstQuestions.questionAnswers' => function($subquery){
+
+                    }, 'mstQuestions.catQuestionType' => function($subquery){
+
+                    },'mstQuestions.catQuestionType.answerType' => function($subquery){
+
+                    }
+                            
+                    ])->get();
         
         return response()->json($surveys);
     }
