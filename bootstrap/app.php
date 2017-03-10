@@ -76,7 +76,8 @@ $app->routeMiddleware([
     'jwt.auth'    => Tymon\JWTAuth\Middleware\GetUserFromToken::class,
     'jwt.refresh' => Tymon\JWTAuth\Middleware\RefreshToken::class,
     'token'       => App\Http\Middleware\Token::class,
-    'CatchAllOptionsRequestsProvider' => App\Http\Middleware\CorsMiddleware::class
+    'CatchAllOptionsRequestsProvider' => App\Http\Middleware\CorsMiddleware::class,
+    'CorsMiddleware' => Vluzrmos\LumenCors\CorsMiddleware::class
 ]);
 
 /*

@@ -92,10 +92,9 @@ class CreateSchema extends Migration {
             $table->string('finish_text', 255)          ->nullable();
             $table->integer('idSurveyType')             ->unsigned()->nullable(false);
             $table->boolean('anon')->nullable(false)    ->default(0);
-            $table->timestamp('created_at')             ->nullable(false);
-            $table->integer('created_by')               ->nullable(false);
+            $table->integer('created_by');
             $table->integer('updated_by')               ->nullable();
-            $table->timestamp('updated_at')             ->nullable();
+            $table->timestamps();
             $table->boolean('status')                   ->default(1);
             
             $table->foreign('idSurveyType')->references('id')->on('cat_SurveyType');

@@ -19,5 +19,7 @@ composer.phar
 /nbproject/private/
 nbproject
 .rocketeer/
-/apple-access_log
-/apple.com-error_log
+apple-access_log
+apple.com-error_log
+apple.com-access_log
+.gitignore

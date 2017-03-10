@@ -1,6 +1,6 @@
 <?php
 //this is the endpoint of auth
-$app->post('/auth/login', ['middleware' => 'CatchAllOptionsRequestsProvider', 'uses' => 'Auth\AuthController@postLogin']);
+$app->post('/auth/login', ['middleware' => 'CorsMiddleware', 'uses' => 'Auth\AuthController@postLogin']);
 
 //this is an endpoint without auth
 $app->get('api/status', function (){
@@ -31,6 +31,7 @@ $app->group([
     $app->post("survey/"     , "api\\v1\SurveyController@index");
     $app->post("survey/create", "api\\v1\SurveyController@create");
     $app->post("survey/delete", "api\\v1\SurveyController@delete");
+    $app->post("survey/status", "api\\v1\SurveyController@status");
     $app->post("survey/update", "api\\v1\SurveyController@update");
     
     /* --------- cat surveys ---------     */

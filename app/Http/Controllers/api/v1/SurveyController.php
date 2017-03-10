@@ -41,10 +41,7 @@ class SurveyController extends Api{
         ]);
         
         $this->setArrayDelete([
-            'name'                          => 'string|required|max:100|min:3',
-            "welcome_text"                  => "string|max:255",
-            "finish_text"                   => "string|max:255",
-            "anon"                          => "integer",
+            'id'                          => 'integer|required|'
         ]);
         parent::__construct();
     }
@@ -161,7 +158,7 @@ class SurveyController extends Api{
             return $validate;
         
         if(($survey = $this->getSurveyById($request->get("id"))) == NULL)
-                return response()->json (["status" => false, "message" => "the survey doesn't exists"]);
+                return response()->json (["status" => false, "message" => "the survey does not exists"]);
         
         $survey->status = ((int) $request->get("reactivate") == 1) ? 1 : 0;
         
@@ -171,6 +168,24 @@ class SurveyController extends Api{
                         response ()->json (["status" => true, "message" => "survey deactivated"]);
         else
             return response()->json (["status" => false, "message" => SystemMessages::SYSTEM_ERROR_ACTION]);
+    }
+    
+    public function status(Request $request){
+         try {
+            $this->validate($request, array("id" => "integer|required", "status" => "integer|required|max:1|min:0"));
+        } catch (HttpResponseException $e) {
+            return response()->json(['status' => false, 'message' => 'invalid_parameters',], IlluminateResponse::HTTP_BAD_REQUEST);
+        }
+        
+        $newstatus = $request->input("status");
+        
+        if(!($survey = mstSurveys::find($request->input("id"))))
+            return response ()->json (["status" => false, "message" => "survey not found"]);    
+        
+        $survey->status = $newstatus;
+        $survey->save();
+        
+        return response ()->json (["status" => true, "message" => ((int)$newstatus == 0) ? "survey disabled" : "survey enabled"]);    
     }
     
     function setValuesRestrictedUpdate($survey){
