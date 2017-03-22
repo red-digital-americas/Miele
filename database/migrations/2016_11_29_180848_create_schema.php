@@ -117,6 +117,8 @@ class CreateSchema extends Migration {
             $table->boolean('required')                 ->nullable(false)->default(0);
             $table->integer('idSurvey')                 ->unsigned()->nullable(false);
             $table->integer('idQuestionType')           ->unsigned()->nullable(false);
+            $table->integer('idParent')                 ->nullable(false)->default(0);
+            $table->string('conditionalAnswer')         ->nullable(false)->default(null);
             $table->timestamp('created_at')             ->nullable(false);
             $table->integer('created_by')               ->nullable(false);
             $table->integer('updated_by')               ->nullable();

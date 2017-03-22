@@ -1,22 +1,20 @@
 <?php
+/**
+ * @copyright (c) 2017, Apernet 
+ * @author Daniel Luna dluna@aper.net
+ */
 namespace App\Http\Controllers\api\v1;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as IlluminateResponse;
 use App\mstSurveys;
-use App\catAnswerType;
 use App\mstQuestionAnswer;
 use App\mstQuestion;
 use App\Exceptions\SystemMessages;
 use App\Http\Controllers\api\v1\Api;
 
-/**
- * Description of SurveyController
- *
- * @author danielunag
- */
 class SurveyController extends Api{
-    
+    protected $arrayAnswerKey = array();
     public function __construct() {
         $this->setArrayUpdate([
             'id'                            => 'integer|required',
@@ -31,13 +29,13 @@ class SurveyController extends Api{
             'name'                          => 'string|required|max:100|min:3',
             "welcome_text"                  => "string|max:255",
             "finish_text"                   => "string|max:255",
-            "anon"                          => "integer",
+            "anon"                          => "integer|required|min:0|max:1",
             "questions"                     => "array|min:1|required",
             "questions.*.text"              => "string|required",
             "questions.*.idQuestionType"    => "integer|required",
-            "answers"                       => "array",
-            "answers.*.text"                => "string|required",
-            "answers.*.idQuestion"          => "integer|required",
+            "questions.*.answers"           => "array",
+            "questions.*.answers.*.text"    => "string|required",
+            "questions.*.answers.*.id"      => "string|required",
         ]);
         
         $this->setArrayDelete([
@@ -47,7 +45,6 @@ class SurveyController extends Api{
     }
         
     public function index(Request $request){
-//        $surveys = null;
         $idSurvey = $request->get("id");
         if((int) $idSurvey > 0){
             $surveys = mstSurveys::
@@ -78,14 +75,14 @@ class SurveyController extends Api{
                     }
                             
                     ])->get();
-        
+                    
         return response()->json($surveys);
     }
     
     public function create(Request $request){        
         if(!($validate = $this->validateRequest($request, "create")) == true)
             return $validate;
-
+               
         return $this->createSurvey($request);
     }
     
@@ -105,25 +102,86 @@ class SurveyController extends Api{
             IlluminateResponse::HTTP_BAD_REQUEST]);
     }
     
-    private function saveQuestion($newSurvey, $questions){
-        foreach ($questions as $q){
+    private function saveQuestion($newSurvey, $questions_){
+        $questions = $this->sortQuestions($questions_);
+
+        foreach ($questions as $index => $q){
             $q['idSurvey'] = $newSurvey->id;
             $question = mstQuestion::create($q);
+            
+            $this->arrayAnswerKey[$index]['id'] = $question->id;
+            
             $this->setValuesRestrictedOfCreate($question);
             $this->saveQuestionAnswers($q, $question);
-        }
-    }
-    
-    private function saveQuestionAnswers($questionArray,$question){
-        if(isset($questionArray['answers'])){
-            foreach ($questionArray['answers'] as $ans){
-                $ans['idQuestion'] = $question->id;
-                $answer = mstQuestionAnswer::create($ans);
-                $this->setValuesRestrictedOfCreate($answer);
+            
+            if(strcasecmp($q['idParent'], 0) !== 0 ){
+                 $question->idParent = $this->arrayAnswerKey[$q['idParent']]['id'];
+                 if(isset($this->arrayAnswerKey[$q['idParent']][$q['conditionalAnswer']]))
+                    $question->answer = $this->arrayAnswerKey[$q['idParent']][$q['conditionalAnswer']];
+                 else{
+//                     echo "  ---- solicitando ".$q['idParent']." ---- ";
+                     if(isset($this->arrayAnswerKey[$q['id']]['answer']))
+                        $question->answer = $this->arrayAnswerKey[$q['id']]['answer'];
+                 }
+                 
+                 $question->save();
             }
         }
+                
+        return 0;
     }
     
+    private function sortQuestions($questions_){
+        $master = $this->getMasterQuestions($questions_);
+        $conditional = $this->getConditionalQuestions($questions_);
+        
+        return array_merge($master, $conditional);
+    }
+    
+    private function getMasterQuestions($questions){
+        $master = [];
+        foreach ($questions as $key => $value){
+            if(strcasecmp(0, $value['idParent']) === 0){
+                $master[$value['id']] = $value;
+            }
+        }
+        return $master;
+    }
+    
+    private function getConditionalQuestions($questions){
+        $conditional = [];
+        foreach ($questions as $key => $value){
+            if(strcasecmp(0, $value['idParent']) !== 0)
+                $conditional[$value['id']] = $value;
+        }
+        return $conditional;
+    }
+    
+    private function saveQuestionAnswers($questionArray, $question) {
+        if (strcasecmp($questionArray['conditionalAnswer'], "si") === 0 or strcasecmp($questionArray['conditionalAnswer'], "no") === 0){
+//            echo "<br> -----   SI/NO a entrada ".$questionArray['text']."     ".$questionArray['id']." -----   ";
+                $this->arrayAnswerKey[$questionArray['id']]['answer'] =  $questionArray['conditionalAnswer'];                
+        }
+        
+        if (!isset($questionArray['answers']))
+            return true;
+
+        foreach ($questionArray['answers'] as $ans) {
+//            echo "<br>insertando answer ".$ans['text']." ---> ".$questionArray['text'];
+            $ans['idQuestion'] = $question->id;
+            $answer = mstQuestionAnswer::create($ans);
+            
+            if(isset($ans['id'])){
+                $this->arrayAnswerKey[$questionArray['id']][$ans['id']] =  $answer->id;
+//                echo "idAnswer: ".$this->arrayAnswerKey[$questionArray['id']][$ans['id']]."    ---  ";
+            }
+
+            $this->arrayAnswerKey[$question->id][$questionArray['id']] = $answer->id;
+            $this->setValuesRestrictedOfCreate($answer);
+        }
+        
+    }
+
     function setValuesRestrictedOfCreate($survey){
         $survey->created_by = $this->userLogged->id;
         return $survey->save();
