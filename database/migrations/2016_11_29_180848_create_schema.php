@@ -168,7 +168,7 @@ class CreateSchema extends Migration {
             $table->foreign('idSurvey')->references('id')->on('mst_Surveys');
         });
 
-        Schema::create('mst_AnswerSurvey', function (Blueprint $table) {
+        Schema::create('mst_SurveyAnswer', function (Blueprint $table) {
             $table->increments('id')                    ->nullable(false);
             $table->string('answer')                    ->nullable();
             $table->integer('idQuestion')               ->unsigned()->nullable(false);
@@ -281,8 +281,8 @@ class CreateSchema extends Migration {
         if (Schema::hasTable('mst_SurveySubject')) 
             Schema::drop('mst_SurveySubject');
         
-        if (Schema::hasTable('mst_AnswerSurvey')) 
-            Schema::drop('mst_AnswerSurvey');
+        if (Schema::hasTable('mst_SurveyAnswer')) 
+            Schema::drop('mst_SurveyAnswer');
         
         if (Schema::hasTable('mst_SurveyApplied')) 
             Schema::drop('mst_SurveyApplied');
