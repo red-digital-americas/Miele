@@ -34,6 +34,9 @@ $app->group([
     $app->post("survey/status", "api\\v1\SurveyController@status");
     $app->post("survey/update", "api\\v1\SurveyController@update");
     
+    $app->post("surveyanswer/"     , "api\\v1\SurveyAnswerController@index");
+    $app->post("surveyanswer/create", "api\\v1\SurveyAnswerController@create");
+    
     /* --------- cat surveys ---------     */
     $app->post("surveyType/", "api\\v1\CatSurveyTypeController@index");
     $app->post("surveyType/create", "api\\v1\CatSurveyTypeController@create");
