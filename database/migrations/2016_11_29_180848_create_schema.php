@@ -191,6 +191,8 @@ class CreateSchema extends Migration {
             $table->string('address')                    ->nullable(false);
             $table->string('telephone')                 ->nullable(false);
             $table->string('email',45)                  ->nullable(false);
+            $table->boolean('newsletter')               ->nullable(false);
+            $table->boolean('eventSubscription')        ->nullable(false);
             $table->timestamp('created_at')             ->nullable(false);
             $table->integer('created_by')               ->nullable(false);
         });

@@ -39,7 +39,7 @@ class SurveyTypeTableSeeder extends Seeder{
             'id'            => 4,
             'name'          => "Otros",
             'icon'          => "img/surveyIcon/logo.png",
-            'color'         => "#F8F4E9",
+            'color'         => "#000",
             'created_by'    => 1
         ]);
     }
