@@ -15,6 +15,7 @@ use App\mstSurveys;
 use App\mstQuestionAnswer;
 use App\mstQuestion;
 use App\mstSurveyAnswer;
+use App\mstSurveySubject;
 use App\Exceptions\SystemMessages;
 use App\Http\Controllers\api\v1\Api;
 
@@ -26,8 +27,9 @@ class SurveyAnswerController extends Api {
             "question.*.idQuestion"                 => "integer|min:1",
             "question.*.idQuestionAnswer"           => "integer|min:1",
             "surveySubjectData"                     => "array",
-            "surveySubjectData.*.newsletter"        => "integer|required",
-            "surveySubjectData.*.eventSubscription" => "integer|required"
+            "surveySubjectData.newsletter"          => "integer|required",
+            "surveySubjectData.eventSubscription"   => "integer|required",
+            "surveySubjectData.gender"              => "string|min:1|max:1"
         ]);        
         
         $this->setArrayUpdate([
@@ -46,20 +48,27 @@ class SurveyAnswerController extends Api {
     }
     
     public function create(Request $request) {
-        try {
-            if (!($validate = $this->validateRequest($request, "create")) == true)
+        if (!($validate = $this->validateRequest($request, "create")) == true)
                 return $validate;
+        
+        try {
+            
             $idSurvey = $request->input("id");
+            $survey = mstSurveys::find($idSurvey);
+                    
             $surveyAppliedData = array("idSurvey" => $idSurvey, "completed" => 1);
             
             if (!($surveyApplied = mstSurveyApplied::create($surveyAppliedData)))
-                return response()->json(["status" => 0, "message" => ""]);
+                return response()->json(["status" => 0, "message" => "Error al registrar encuesta contestada"]);
             
             $this->setValuesRestrictedOfCreate($surveyApplied);
             
+            $surveySubjetc = ((int)$survey->anon == 1) ? null : mstSurveySubject::create($request->input("surveySubjectData"));
+            
             foreach ($request->input("questionData") as $key => $answerQuestion){
                 $answerQuestion['idSurveyApplied'] = $surveyApplied->id;
-         
+                $answerQuestion['idSurveyApplied'] = ((int)$survey->anon == 1) ? null : $surveySubjetc->id;
+                
                 if(!($surveyAnswer = mstSurveyAnswer::create($answerQuestion)))
                         return response ()->json (["status" => false, "message" => "Error al registrar una de las respuestas."]);
             }

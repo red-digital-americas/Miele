@@ -34,7 +34,11 @@ class mstSurveySubject extends Model implements AuthenticatableContract, Authori
         "mothers_last_name",
         "birthday",
         "addres",
-        "telephone"
+        "email",
+        "telephone",
+        "gender",
+        "newsletter",
+        "eventSubscription"
     ];
 
     /**

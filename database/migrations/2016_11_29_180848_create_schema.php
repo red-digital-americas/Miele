@@ -175,8 +175,10 @@ class CreateSchema extends Migration {
             $table->integer('idQuestionAnswer')         ->nullable();
             $table->integer('idAnswerType')             ->nullable();
             $table->integer('idSurveyApplied')          ->unsigned()->nullable(false);
-            $table->timestamp('created_at')             ->nullable(false);
-            $table->integer('created_by')               ->nullable(false);
+            $table->timestamp('created_at')             ->nullable();
+            $table->timestamp('updated_at')             ->nullable();
+            $table->integer('created_by')               ->nullable();
+            $table->integer('updated_by')               ->nullable();
             
             $table->foreign('idQuestion')->references('id')->on('mst_Questions');
             $table->foreign('idSurveyApplied')->references('id')->on('mst_SurveyApplied');
@@ -188,13 +190,16 @@ class CreateSchema extends Migration {
             $table->string('last_name', 45)             ->nullable(false);
             $table->string('mothers_last_name', 45)     ->nullable();
             $table->date('birthday')                    ->nullable(false);
-            $table->string('address')                    ->nullable(false);
+            $table->string('gender',2)                  ->nullable(false);
+            $table->string('address')                   ->nullable(false);
             $table->string('telephone')                 ->nullable(false);
             $table->string('email',45)                  ->nullable(false);
             $table->boolean('newsletter')               ->nullable(false);
             $table->boolean('eventSubscription')        ->nullable(false);
             $table->timestamp('created_at')             ->nullable(false);
+            $table->timestamp('updated_at')             ->nullable();
             $table->integer('created_by')               ->nullable(false);
+            $table->integer('updated_by')               ->nullable();
         });
 
         /*      ---- Product Catalog Tables ----        */
