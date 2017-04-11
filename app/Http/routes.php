@@ -64,5 +64,8 @@ $app->group([
     /* ----------   Token   ----------     */
     $app->get('/auth/refresh', 'Auth\AuthController@getRefresh');
     $app->post('/auth/invalidate', 'Auth\AuthController@deleteInvalidate');
-        
+    
+    
+    /* ----------   Sync   ----------     */
+    $app->post('/sync', "api\\v1\SyncController@index");
 });

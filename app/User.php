@@ -35,7 +35,7 @@ class User extends Model implements
      * @var array
      */
     protected $hidden = [
-        'password',
+        'idRole',
         'remember_token',
         'created_by',
         'created_at',
