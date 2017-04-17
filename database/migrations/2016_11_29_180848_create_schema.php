@@ -175,8 +175,7 @@ class CreateSchema extends Migration {
             $table->integer('idQuestionAnswer')         ->nullable();
             $table->integer('idAnswerType')             ->nullable();
             $table->integer('idSurveyApplied')          ->unsigned()->nullable(false);
-            $table->timestamp('created_at')             ->nullable();
-            $table->timestamp('updated_at')             ->nullable();
+            $table->timestamps();
             $table->integer('created_by')               ->nullable();
             $table->integer('updated_by')               ->nullable();
             
@@ -287,7 +286,7 @@ class CreateSchema extends Migration {
         
         if (Schema::hasTable('mst_SurveySubject')) 
             Schema::drop('mst_SurveySubject');
-        
+                
         if (Schema::hasTable('mst_SurveyAnswer')) 
             Schema::drop('mst_SurveyAnswer');
         

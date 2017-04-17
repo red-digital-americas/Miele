@@ -16,7 +16,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
 class mstSurveyAnswer extends Model implements AuthenticatableContract, AuthorizableContract{
     use Authenticatable, Authorizable;
-    public $timestamps = false;
+//    public $timestamps = false;
     public $table = 'mst_SurveyAnswer';
 
     /**
