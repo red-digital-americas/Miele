@@ -60,6 +60,7 @@ class CreateSchema extends Migration {
             $table->string('name')                      ->nulable(false);
             $table->string('email')                     ->unique();
             $table->string('password')                  ->nulable(false);
+            $table->string('offline')                   ->nulable(false);
             $table->string('last_name', 255)            ->nullable();
             $table->string('mothers_last_name', 255)    ->nullable();
             $table->integer('created_by')               ->nullable(false);

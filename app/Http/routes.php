@@ -7,6 +7,14 @@ $app->get('api/status', function (){
     return "v1.0";
 });
 
+/* ----------   System   ----------     */
+$app->group([
+    'middleware' => ["CatchAllOptionsRequestsProvider"],
+    ],
+    function ($app) {
+        $app->post("status", "api\\v1\StatusController@status");
+    });
+
 //these are endpoints that required auth
 $app->group([
     'middleware' => ["CatchAllOptionsRequestsProvider", 'jwt.auth'],

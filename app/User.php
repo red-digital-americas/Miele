@@ -24,6 +24,7 @@ class User extends Model implements
         'name',
         'email',
         'password',
+        'offline',
         'last_name',
         'mothers_last_name',
         'created_by',

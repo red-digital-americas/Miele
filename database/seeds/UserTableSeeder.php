@@ -15,7 +15,8 @@ class UserTableSeeder extends Seeder
             'idRole'             => 1,
             'name'              => env('ADMIN_USERNAME'),
             'email'             => env('ADMIN_EMAIL'),
-            'password'          => app('hash')->make(env('ADMIN_EMAIL_PASS')),
+            'password'          => app('hash')->make(env('ADMIN_EMAIL_PASS', 'admin')),
+            'offline'            => env('ADMIN_EMAIL_PASS', 'admin'),
             'remember_token'    => str_random(10),
         ]);
     }
