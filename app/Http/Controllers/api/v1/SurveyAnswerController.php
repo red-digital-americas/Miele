@@ -66,20 +66,21 @@ class SurveyAnswerController extends Api {
                     $this->setValuesRestrictedOfCreate($surveyApplied);
 
                     $surveySubjetc = ((int)$survey->anon == 1) ? null : mstSurveySubject::create($surveyAnswer["surveySubjectData"]);
-
+                    
+                    ($surveySubjetc !== null & (int)$survey->anon == 1) ? $surveyApplied->idSurveySubject = $surveySubjetc->id : null;
+                    
+                    $surveyApplied->save();
+                    
                     foreach ($surveyAnswer["questionData"] as $key => $answerQuestion){
                         $answerQuestion['idSurveyApplied'] = $surveyApplied->id;
-                        $answerQuestion['idSurveyApplied'] = ((int)$survey->anon == 1) ? null : $surveySubjetc->id;
-
-                        if(!($surveyAnswer = mstSurveyAnswer::create($answerQuestion)))
-                                return response ()->json (["status" => false, "message" => "Error al registrar una de las respuestas."]);
+                        $surveyAnswer = mstSurveyAnswer::create($answerQuestion);
                     }
                 }
             
             
             return response()->json(["status" => true, "message" => "Datos almacenados"]);
         } catch (\Exception $e) {
-            return response()->json(["status" => 0, "message" => $e->getMessage()]);
+            return response()->json(["status" => 0, "error" => $e->getMessage()]);
         }
 
     }
