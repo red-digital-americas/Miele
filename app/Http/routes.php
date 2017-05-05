@@ -76,4 +76,7 @@ $app->group([
     
     /* ----------   Sync   ----------     */
     $app->post('/sync', "api\\v1\SyncController@index");
+    
+    /* ----------   Dashboard   ----------     */
+    $app->post("dashboard/survey/"     , "api\\v1\DashboardController@index");
 });
