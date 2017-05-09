@@ -16,10 +16,6 @@ namespace App\Http\Controllers\api\v1;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as IlluminateResponse;
 use App\mstSurveys;
-use App\mstQuestionAnswer;
-use App\mstQuestion;
-use App\mstSurveyAnswer;
-use App\Exceptions\SystemMessages;
 use App\Http\Controllers\api\v1\Api;
 
 class DashBoardController extends Api {
@@ -40,7 +36,11 @@ class DashBoardController extends Api {
                             
                         }, 'mstQuestions.surveyAnswer' => function($subquery) {
                             
-                        }
+                        }, 'mstQuestions.surveyAnswer.surveyApplied' => function($subquery) {
+                            
+                        }, 'mstQuestions.surveyAnswer.surveyApplied.surveySubject' => function($subquery) {
+                            
+                        }    
                                 
                     ])
                     ->get();

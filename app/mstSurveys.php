@@ -54,5 +54,5 @@ class mstSurveys extends Model implements AuthenticatableContract, AuthorizableC
     public function mstQuestions() {
         return $this->hasMany('App\mstQuestion', 'idSurvey');
     }
-
+    
 }

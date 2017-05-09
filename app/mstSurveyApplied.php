@@ -36,9 +36,12 @@ class mstSurveyApplied extends Model implements AuthenticatableContract, Authori
      */
     protected $hidden = [
         "created_by",
-        "created_at",
         "updated_at",
         "updated_by",
         "status"
     ];
+    
+    public function surveySubject() {
+        return $this->hasOne('App\mstSurveySubject', 'id', 'idSurveySubject');
+    }
 }

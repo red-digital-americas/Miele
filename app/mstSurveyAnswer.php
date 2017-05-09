@@ -44,4 +44,8 @@ class mstSurveyAnswer extends Model implements AuthenticatableContract, Authoriz
         "updated_by",
         "status"
     ];
+    
+    public function surveyApplied() {
+        return $this->hasOne('App\mstSurveyApplied', 'id', 'idSurveyApplied');
+    }
 }

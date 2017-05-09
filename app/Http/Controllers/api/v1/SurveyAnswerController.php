@@ -67,7 +67,7 @@ class SurveyAnswerController extends Api {
 
                     $surveySubjetc = ((int)$survey->anon == 1) ? null : mstSurveySubject::create($surveyAnswer["surveySubjectData"]);
                     
-                    ($surveySubjetc !== null & (int)$survey->anon == 1) ? $surveyApplied->idSurveySubject = $surveySubjetc->id : null;
+                    ($surveySubjetc !== null) ? $surveyApplied->idSurveySubject = $surveySubjetc->id : null;
                     
                     $surveyApplied->save();
                     
