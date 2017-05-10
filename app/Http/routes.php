@@ -78,5 +78,5 @@ $app->group([
     $app->post('/sync', "api\\v1\SyncController@index");
     
     /* ----------   Dashboard   ----------     */
-    $app->post("dashboard/survey/"     , "api\\v1\DashboardController@index");
+    $app->post("dashboard/survey/"     , "api\\v1\DashBoardController@index");
 });
