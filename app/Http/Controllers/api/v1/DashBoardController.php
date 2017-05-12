@@ -24,26 +24,37 @@ class DashBoardController extends Api {
         try {
             $id = $request->get("id");
 
-            $survey = mstSurveys::find($id)->where("status", 1)
-                    ->with("surveyType")->with([
-                        "mstQuestions" => function($subquery) {
+            $survey = mstSurveys::
+                    where("id", $id)
+                   
+                    ->with([
+                        "mstQuestions" => function($subquery) use ($id) {
                             $subquery->where("status", 1);
-                        }, 'mstQuestions.questionAnswers' => function($subquery) {
+                        },
+                        "mstQuestions" => function($subquery) use ($id) {
+                            $subquery->where("status", 1);
+                        },
+                        'mstQuestions.questionAnswers' => function($subquery) {
                             
-                        }, 'mstQuestions.catQuestionType' => function($subquery) {
+                        },
+                        'mstQuestions.catQuestionType' => function($subquery) {
                             
-                        }, 'mstQuestions.catQuestionType.answerType' => function($subquery) {
+                        },
+                        'mstQuestions.catQuestionType.answerType' => function($subquery) {
                             
-                        }, 'mstQuestions.surveyAnswer' => function($subquery) {
+                        },
+                        'mstQuestions.surveyAnswer' => function($subquery) {
                             
-                        }, 'mstQuestions.surveyAnswer.surveyApplied' => function($subquery) {
+                        },
+                        'mstQuestions.surveyAnswer.surveyApplied' => function($subquery) {
                             
-                        }, 'mstQuestions.surveyAnswer.surveyApplied.surveySubject' => function($subquery) {
-                            
-                        }    
-                                
+                        },
+                        'mstQuestions.surveyAnswer.surveyApplied.surveySubject' => function($subquery) {
+                        }
                     ])
-                    ->get();
+                        ->with("surveyType")
+                    ->first()
+                            ;
 
             return $survey;
         } catch (\Exception $e) {
