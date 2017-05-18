@@ -2,17 +2,12 @@
 
 namespace App;
 
-use Illuminate\Auth\Authenticatable;
-use Laravel\Lumen\Auth\Authorizable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Model implements
-    AuthenticatableContract,
-    AuthorizableContract
+class User extends Authenticatable
 {
-    use Authenticatable, Authorizable;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -44,9 +39,8 @@ class User extends Model implements
         'updated_by',
         'status'
     ];
-    
-    public function role()
-    {
+
+    public function role() {
         return $this->hasOne('App\mstRoles', 'id');
     }
 
@@ -55,8 +49,7 @@ class User extends Model implements
      *
      * @return mixed
      */
-    public function getJWTIdentifier()
-    {
+    public function getJWTIdentifier() {
         return $this->getKey();
     }
 
@@ -65,8 +58,8 @@ class User extends Model implements
      *
      * @return array
      */
-    public function getJWTCustomClaims()
-    {
+    public function getJWTCustomClaims() {
         return [];
     }
+
 }

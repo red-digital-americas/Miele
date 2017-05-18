@@ -45,23 +45,23 @@ class AuthController extends Controller {
             //Entonces retorna credenciales invalidas
             if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json([
-                                'status' => false,
-                                'message' => 'invalid credential\'s',
+                            'status' => false,
+                            'message' => 'invalid credential\'s',
                                 ], IlluminateResponse::HTTP_UNAUTHORIZED);
             }
         } catch (JWTException $e) {
             //Si existe algun error interno externo arroja error 500
             return response()->json([
-                            'status' => false,
-                            'message' => 'it was not possible to create the access token',                       
+                        'status' => false,
+                        'message' => 'it was not possible to create the access token',
                             ], IlluminateResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         // si el login y el token es valido los retorno  :)
         return response()->json([
-                        'status' => true,
-                        'message' => 'token genereted',
-                        'token' => $token,
+                    'status' => true,
+                    'message' => 'token genereted',
+                    'token' => $token,
         ]);
     }
 
@@ -85,7 +85,7 @@ class AuthController extends Controller {
         $token = JWTAuth::parseToken();
 
         $token->invalidate();
-        
+
         return ['status' => true, "message" => 'your token has been invalidated'];
     }
 
@@ -104,17 +104,18 @@ class AuthController extends Controller {
 
     public static function getAuthenticatedUser() {
         try {
-            if (!$user = JWTAuth::parseToken()->authenticate()) 
+            if (!$user = JWTAuth::parseToken()->authenticate())
                 return response()->json(['status' => 0, 'message' => 'user_not_found'], 404);
-        
         } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
             return response()->json(['status' => 0, 'message' => 'token_expired'], $e->getStatusCode());
         } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
             return response()->json(['status' => 0, 'message' => 'token_invalid'], $e->getStatusCode());
         } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
             return response()->json(['status' => 0, 'message' => 'token_absent'], $e->getStatusCode());
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {//general JWT exception
+            return response()->json(['status' => 0, 'message' => 'token_invalid'], $e->getStatusCode());
         }
-        
+
         return response()->json(['status' => 1, 'id' => $user->id])->getData();
     }
 
