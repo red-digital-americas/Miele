@@ -22,13 +22,13 @@ use App\Http\Controllers\api\v1\Api;
 class SurveyAnswerController extends Api {
     public function __construct() {
         $this->setArrayCreate([
-            "surveyAnswer"                                          => "array|min:1|required",
-            "surveyAnswer.*.questionData"                           => "array|min:1|required",
-            "surveyAnswer.*.questionData.*.answer"                  => "string|required",
+            "surveyAnswer"                                          => "array|min:1",
+            "surveyAnswer.*.questionData"                           => "array|min:1",
+            "surveyAnswer.*.questionData.*.answer"                  => "string|",
             "surveyAnswer.*.question.*.idQuestion"                  => "integer|min:1",
             "surveyAnswer.*.surveySubjectData"                      => "array",
-            "surveyAnswer.*.surveySubjectData.newsletter"           => "integer|required",
-            "surveyAnswer.*.surveySubjectData.eventSubscription"    => "integer|required",
+            "surveyAnswer.*.surveySubjectData.newsletter"           => "integer",
+            "surveyAnswer.*.surveySubjectData.eventSubscription"    => "integer",
             "surveySubjectData.gender"                              => "string|min:1|max:1",
             "surveyAnswer.*.questionData"                           => "array|required|min:1"
         ]);        
