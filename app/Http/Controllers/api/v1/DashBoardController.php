@@ -19,6 +19,7 @@ use App\mstSurveys;
 use App\mstSurveyApplied;
 use App\Http\Controllers\api\v1\Api;
 use \Maatwebsite\Excel\Facades\Excel;
+use App\mstQuestion;
 
 class DashBoardController extends Api {
 
@@ -69,7 +70,7 @@ class DashBoardController extends Api {
             $id = $request->get("id");
 
             $survey = $this->getSurveyBySubject($id);
-            
+       
             $raws = $this->getExcelRows($survey);
 
             Excel::create('Miele Dashboard', function($excel) use($raws) {
@@ -86,11 +87,14 @@ class DashBoardController extends Api {
 
     private function getExcelRows($survey) {
         $rows = array();
-        
+
         foreach ($survey as $surveyApplied) {
             $row = array("Fecha" => $surveyApplied["created_at"], "Nombre" => "Anónimo", "email" => "", "Recibe noticias" => "", "Suscripción Eventos" => "");
-
             $answersCollection = array();
+            
+            foreach ($surveyApplied["survey"]["mst_questions"] as $question){
+                $answersCollection[$question["id"]] = array("question" => $question["text"], "answer" => null);
+            }
 
             if ($surveyApplied["survey_subject"] !== null) {
                 $row["Nombre"] = $surveyApplied["survey_subject"]["name"] . " " . $surveyApplied["survey_subject"]["last_name"] . " " . $surveyApplied["survey_subject"]["mothers_last_name"];
@@ -110,8 +114,7 @@ class DashBoardController extends Api {
             }
 
             foreach ($answersCollection as $value) {
-                $row[] = $value["question"];
-                $row[] = $value["answer"];
+                $row[$value["question"]] = trim($value["answer"],",");
             }
 
             $rows[] = $row;
@@ -126,6 +129,9 @@ class DashBoardController extends Api {
                         where("idSurvey", $id)
                         ->with([
                             "survey" => function($subquery) {
+                                
+                            },
+                            "survey.mstQuestions" => function($subquery) {
                                 
                             },
                             "surveySubject" => function($subquery) {
