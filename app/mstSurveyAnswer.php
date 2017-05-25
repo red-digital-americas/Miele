@@ -34,7 +34,6 @@ class mstSurveyAnswer extends Model{
      */
     protected $hidden = [
         "created_by",
-        "created_at",
         "updated_at",
         "updated_by",
         "status"
@@ -42,5 +41,9 @@ class mstSurveyAnswer extends Model{
     
     public function surveyApplied() {
         return $this->hasOne('App\mstSurveyApplied', 'id', 'idSurveyApplied');
+    }
+    
+    public function question(){
+        return $this->belongsTo('App\mstQuestion', 'idQuestion', 'id');
     }
 }

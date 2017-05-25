@@ -17,7 +17,7 @@
 
 //this is the endpoint of auth
 Route::group(['middleware' => \Barryvdh\Cors\HandleCors::class ], function(){
-    Route::get('/auth/login', 'Auth\AuthController@postLogin'); 
+    Route::post('/auth/login', 'Auth\AuthController@postLogin'); 
 });
 
 

@@ -39,4 +39,12 @@ class mstSurveyApplied extends Model{
     public function surveySubject() {
         return $this->hasOne('App\mstSurveySubject', 'id', 'idSurveySubject');
     }
+    
+    public function surveyAnswer(){
+        return $this->hasMany('App\mstSurveyAnswer', 'idSurveyApplied', 'id');
+    }
+    
+    public function survey(){
+        return $this->belongsTo('App\mstSurveys', 'idSurvey', 'id');
+    }
 }

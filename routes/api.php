@@ -20,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 /* ----------   System   ----------     */
 Route::group([
-    'middleware' => ["CatchAllOptionsRequestsProvider"],
+    'middleware' => [\Barryvdh\Cors\HandleCors::class],
     ],
     function ($app) {
         Route::match(['get', 'post'],"status", "api\\v1\StatusController@status");
@@ -92,4 +92,5 @@ Route::group([
     
     /* ----------   Dashboard   ----------     */
     Route::match(['get', 'post'],"dashboard/survey/"     , "api\\v1\DashBoardController@index");
+    Route::match(['get', 'post'], "dashboard/download/excel", "api\\v1\\DashboardController@downloadExcel");
 });
