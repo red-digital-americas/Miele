@@ -8,7 +8,7 @@
 
 namespace App\Http\Controllers\api\v1;
 use Illuminate\Http\Request;
-use Laravel\Lumen\Routing\Controller;
+use App\Http\Controllers\Controller;
 /**
  * Description of StatusController
  *
