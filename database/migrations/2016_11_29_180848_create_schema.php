@@ -93,7 +93,7 @@ class CreateSchema extends Migration {
             $table->string('finish_text', 255)          ->nullable();
             $table->integer('idSurveyType')             ->unsigned()->nullable(false);
             $table->boolean('anon')->nullable(false)    ->default(0);
-            $table->integer('created_by');
+            $table->integer('created_by')               ->nullable();
             $table->integer('updated_by')               ->nullable();
             $table->timestamps();
             $table->boolean('status')                   ->default(1);
@@ -189,14 +189,14 @@ class CreateSchema extends Migration {
             $table->string('name', 45)                  ->nullable(false);
             $table->string('last_name', 45)             ->nullable(false);
             $table->string('mothers_last_name', 45)     ->nullable();
-            $table->date('birthday')                    ->nullable(false);
-            $table->string('gender',2)                  ->nullable(false);
-            $table->string('address')                   ->nullable(false);
-            $table->string('telephone')                 ->nullable(false);
+            $table->date('birthday')                    ->nullable();
+            $table->string('gender',2)                  ->nullable();
+            $table->string('address')                   ->nullable();
+            $table->string('telephone')                 ->nullable();
             $table->string('email',45)                  ->nullable(false);
             $table->boolean('newsletter')               ->nullable(false);
             $table->boolean('eventSubscription')        ->nullable(false);
-            $table->timestamp('created_at')             ->nullable(false);
+            $table->timestamp('created_at')             ->nullable();
             $table->timestamp('updated_at')             ->nullable();
             $table->integer('created_by')               ->nullable();
             $table->integer('updated_by')               ->nullable();
@@ -267,66 +267,27 @@ class CreateSchema extends Migration {
      */
     public function down() {
         /*      --- Survey System ---       */
-        if(Schema::hasTable('users'))
-            Schema::drop('users');
-        
-        if (Schema::hasTable('mst_Roles')) 
-            Schema::drop('mst_Roles');
-        
-        if (Schema::hasTable('log_Tran')) 
-            Schema::drop('log_Tran');
-        
-        if (Schema::hasTable('log_Session')) 
-            Schema::drop('log_Session');
-        
-        if (Schema::hasTable('log_Error')) 
-            Schema::drop('log_Error');
-        
-        if (Schema::hasTable('mst_Newsletter'))
-            Schema::drop('mst_Newsletter');
-        
-        if (Schema::hasTable('mst_SurveySubject')) 
-            Schema::drop('mst_SurveySubject');
-                
-        if (Schema::hasTable('mst_SurveyAnswer')) 
-            Schema::drop('mst_SurveyAnswer');
-        
-        if (Schema::hasTable('mst_SurveyApplied')) 
-            Schema::drop('mst_SurveyApplied');
-        
-        if (Schema::hasTable('mst_QuestionAnswers')) 
-            Schema::drop('mst_QuestionAnswers');
-        
-        if (Schema::hasTable('cat_AnswerType')) 
-            Schema::drop('cat_AnswerType');
-        
-        
-        if (Schema::hasTable('mst_Questions')) 
-            Schema::drop('mst_Questions');
-        
-        if(Schema::hasTable('cat_QuestionType'))
-            Schema::drop('cat_QuestionType');
-        
-        if (Schema::hasTable('mst_Surveys')) 
-            Schema::drop('mst_Surveys');
-        
-        if (Schema::hasTable('cat_SurveyType')) 
-            Schema::drop('cat_SurveyType');
+            Schema::dropIfExists('users');            
+            Schema::dropIfExists('mst_Roles');
+            Schema::dropIfExists('log_Tran');
+            Schema::dropIfExists('log_Session');
+            Schema::dropIfExists('log_Error');
+            Schema::dropIfExists('mst_Newsletter');
+            Schema::dropIfExists('mst_SurveySubject');
+            Schema::dropIfExists('mst_SurveyAnswer');
+            Schema::dropIfExists('mst_SurveyApplied');
+            Schema::dropIfExists('mst_QuestionAnswers');
+            Schema::dropIfExists('cat_AnswerType');
+            Schema::dropIfExists('mst_Questions');
+            Schema::dropIfExists('cat_QuestionType');
+            Schema::dropIfExists('mst_Surveys');
+            Schema::dropIfExists('cat_SurveyType');
         /*      --- Survey System ---       */
-        if (Schema::hasTable('mst_Media')) 
-            Schema::drop('mst_Media');
-        
-        if (Schema::hasTable('mst_CatProdMedia')) 
-            Schema::drop('mst_CatProdMedia');
-        
-        if (Schema::hasTable('mst_ProdVar')) 
-            Schema::drop('mst_ProdVar');
-        
-        if (Schema::hasTable('cat_Products')) 
-            Schema::drop('cat_Products');
-        
-        if (Schema::hasTable('cat_CatProduct')) 
-            Schema::drop('cat_CatProduct');      
+            Schema::dropIfExists('mst_Media');
+            Schema::dropIfExists('mst_CatProdMedia');
+            Schema::dropIfExists('mst_ProdVar');
+            Schema::dropIfExists('cat_Products');
+            Schema::dropIfExists('cat_CatProduct');   
     }
 
 }

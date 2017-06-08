@@ -20,7 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 /* ----------   System   ----------     */
 Route::group([
-    'middleware' => [\Barryvdh\Cors\HandleCors::class],
+    'middleware' => [
+//        \Barryvdh\Cors\HandleCors::class
+        ],
     ],
     function ($app) {
         Route::match(['get', 'post'],"status", "api\\v1\StatusController@status");

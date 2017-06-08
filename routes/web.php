@@ -17,11 +17,8 @@
 
 //this is the endpoint of auth
 Route::group(['middleware' => \Barryvdh\Cors\HandleCors::class ], function(){
-    Route::post('/auth/login', 'Auth\AuthController@postLogin'); 
+    Route::match(["post", "get"],'/auth/login', 'Auth\AuthController@postLogin'); 
 });
 
 
-//this is an endpoint without auth
-Route::get('api/status', function (){
-    return "v1.0";
-});
+
