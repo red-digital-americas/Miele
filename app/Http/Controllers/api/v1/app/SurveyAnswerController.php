@@ -6,17 +6,13 @@
  * and open the template in the editor.
  */
 
-namespace App\Http\Controllers\api\v1;
+namespace App\Http\Controllers\api\v1\app;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response as IlluminateResponse;
 use App\mstSurveyApplied;
 use App\mstSurveys;
-use App\mstQuestionAnswer;
-use App\mstQuestion;
 use App\mstSurveyAnswer;
 use App\mstSurveySubject;
-use App\Exceptions\SystemMessages;
 use App\Http\Controllers\api\v1\Api;
 
 class SurveyAnswerController extends Api {

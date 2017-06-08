@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace App\Http\Controllers\api\v1;
+namespace App\Http\Controllers\api\v1\app;
 
 /**
  * Description of DashBoardController
@@ -19,7 +19,6 @@ use App\mstSurveys;
 use App\mstSurveyApplied;
 use App\Http\Controllers\api\v1\Api;
 use \Maatwebsite\Excel\Facades\Excel;
-use App\mstQuestion;
 
 class DashBoardController extends Api {
 

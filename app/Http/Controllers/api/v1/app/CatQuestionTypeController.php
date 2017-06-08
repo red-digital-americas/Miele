@@ -6,7 +6,7 @@
  * @author Daniel Luna dluna@aper.net
  */
 
-namespace App\Http\Controllers\api\v1;
+namespace App\Http\Controllers\api\v1\app;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as IlluminateResponse;
