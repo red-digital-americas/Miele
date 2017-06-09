@@ -12,16 +12,16 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 
 /* ----------   System   ----------     */
 Route::group([
     'middleware' => [
-//        \Barryvdh\Cors\HandleCors::class
+        \Barryvdh\Cors\HandleCors::class
         ],
     ],
     function ($app) {
@@ -31,18 +31,16 @@ Route::group([
 //these are endpoints that required auth
 Route::group([
     'middleware' => [
-//        "CatchAllOptionsRequestsProvider", 
         'jwt.auth'],
     'prefix' => 'v1',
-//    'namespace' => 'App\Http\Controllers'
-    ],
+        ],
         function ($app) {
     
     /* ----------   Users   ----------     */
-    Route::match(['get', 'post'],"user", "api\\v1\app\UserController@index");
-    Route::match(['get', 'post'],"user/create", "api\\v1\app\UserController@create");
-    Route::match(['get', 'post'],"user/delete", "api\\v1\app\UserController@delete");
-    Route::match(['get', 'post'],"user/update", "api\\v1\app\UserController@update");
+    Route::match(['get', 'post'], "user", "api\\v1\UserController@index");
+    Route::match(['get', 'post'], "user/new", "api\\v1\UserController@create");
+    Route::match(['get', 'post'], "user/delete", "api\\v1\UserController@delete");
+    Route::match(['get', 'post'], "user/update", "api\\v1\UserController@update");
     
     /* ----------   Roles   ----------     */
     Route::match(['get', 'post'],"roles"       , "api\\v1\app\RolesController@index");
@@ -83,11 +81,7 @@ Route::group([
     Route::match(['get', 'post'],"questionType/create", "api\\v1\app\CatQuestionTypeController@create");
     Route::match(['get', 'post'],"questionType/update", "api\\v1\app\CatQuestionTypeController@update");
     Route::match(['get', 'post'],"questionType/delete", "api\\v1\app\CatQuestionTypeController@delete");
-   
-    /* ----------   Token   ----------     */
-    $app->get('/auth/refresh', 'Auth\AuthController@getRefresh');
-    Route::match(['get', 'post'],'/auth/invalidate', 'Auth\AuthController@deleteInvalidate');
-    
+       
     /* ----------   Sync   ----------     */
     Route::match(['get', 'post'],'/sync', "api\\v1\app\SyncController@index");
     

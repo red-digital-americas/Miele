@@ -43,34 +43,7 @@ class CreateSchema extends Migration {
             $table->string('email', 45)                 ->nullable(false)->unique();
         });
         
-        Schema::create('mst_Roles', function (Blueprint $table) {
-            $table->increments('id')                    ->nullable(false);
-            $table->string('name', 255)                 ->unique()->nullable(false);
-            $table->timestamp('created_at')             ->nullable(false);
-            $table->integer('created_by')               ->nullable();
-            $table->integer('updated_by')               ->nullable();
-            $table->timestamp('updated_at')             ->nullable();
-            $table->boolean('status')->nullable(false)  ->default(1);
-            
-        });      
         
-        Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('idRole')                   ->unsigned()->nullable();
-            $table->string('name')                      ->nulable(false);
-            $table->string('email')                     ->unique();
-            $table->string('password')                  ->nulable(false);
-            $table->string('offline')                   ->nulable(false);
-            $table->string('last_name', 255)            ->nullable();
-            $table->string('mothers_last_name', 255)    ->nullable();
-            $table->integer('created_by')               ->nullable();
-            $table->integer('updated_by')               ->nullable();
-            $table->boolean('status')                   ->default(1);
-            $table->rememberToken();
-            $table->timestamps();
-            
-            $table->foreign('idRole')->references('id')->on('mst_Roles');
-        });
 
         Schema::create('cat_SurveyType', function (Blueprint $table) {
             $table->increments('id')                    ->nullable(false);
@@ -267,8 +240,6 @@ class CreateSchema extends Migration {
      */
     public function down() {
         /*      --- Survey System ---       */
-            Schema::dropIfExists('users');            
-            Schema::dropIfExists('mst_Roles');
             Schema::dropIfExists('log_Tran');
             Schema::dropIfExists('log_Session');
             Schema::dropIfExists('log_Error');

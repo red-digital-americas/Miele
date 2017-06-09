@@ -17,8 +17,13 @@
 
 //this is the endpoint of auth
 Route::group(['middleware' => \Barryvdh\Cors\HandleCors::class ], function(){
-    Route::match(["post", "get"],'/auth/login', 'Auth\AuthController@postLogin'); 
+    Route::match(["post", "get"], '/auth/login', 'Auth\AuthController@postLogin'); 
+    Route::match(['get', 'post'], '/auth/refresh', 'Auth\AuthController@getRefresh');
+    Route::match(['get', 'post'],'/auth/invalidate', 'Auth\AuthController@deleteInvalidate');
 });
 
+Route::match(["post", "get"], 'auth/forgotpassword', "api\\v1\PasswordController@forgotPassword");
 
-
+//Auth::routes();
+//
+//Route::get('/home', 'HomeController@index')->name('home');
