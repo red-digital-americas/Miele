@@ -60,7 +60,7 @@ class SurveyAnswerController extends Api {
                         return response()->json(["status" => 0, "message" => "Error al registrar encuesta contestada"]);
 
                     $this->setValuesRestrictedOfCreate($surveyApplied);
-
+     
                     $surveySubjetc = ((int)$survey->anon == 1) ? null : mstSurveySubject::create($surveyAnswer["surveySubjectData"]);
                     
                     ($surveySubjetc !== null) ? $surveyApplied->idSurveySubject = $surveySubjetc->id : null;

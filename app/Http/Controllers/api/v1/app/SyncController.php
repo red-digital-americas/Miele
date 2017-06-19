@@ -24,11 +24,8 @@ class SyncController extends Api{
     }
     
     public function index(Request $request){
-//        $payload = JWTAuth::parseToken()->getPayload();
-//$expires_at = date('d M Y h:i', $payload->get('exp')); 
-//return $expires_at;
         $users = User::all();
-        $surveys = mstSurveys::with("surveyType")->with([
+        $surveys = mstSurveys::where("status", 1)->with("surveyType")->with([
                         "mstQuestions" => function($subquery){
                         $subquery->where("status", 1);
                     }, 'mstQuestions.questionAnswers' => function($subquery){

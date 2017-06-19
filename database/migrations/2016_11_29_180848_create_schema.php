@@ -87,12 +87,12 @@ class CreateSchema extends Migration {
         
         Schema::create('mst_Questions', function (Blueprint $table) {
             $table->increments('id')                    ->nullable(false);
-            $table->string('text', 255)             ->nullable(false);
+            $table->string('text', 255)                 ->nullable(false);
             $table->boolean('required')                 ->nullable(false)->default(0);
             $table->integer('idSurvey')                 ->unsigned()->nullable(false);
             $table->integer('idQuestionType')           ->unsigned()->nullable(false);
             $table->integer('idParent')                 ->nullable(false)->default(0);
-            $table->string('answer')         ->nullable()->default(null);
+            $table->string('answer')                    ->nullable()->default(null);
             $table->timestamp('created_at')             ->nullable(false);
             $table->integer('created_by')               ->nullable();
             $table->integer('updated_by')               ->nullable();
@@ -118,7 +118,7 @@ class CreateSchema extends Migration {
 
         Schema::create('mst_QuestionAnswers', function (Blueprint $table) {
             $table->increments('id')                    ->nullable(false);
-            $table->string('text', 255)               ->nullable(false);
+            $table->string('text', 255)                 ->nullable(false);
             $table->integer('idQuestion')               ->unsigned()->nullable(false);
             $table->timestamp('created_at')             ->nullable(false);
             $table->integer('created_by')               ->nullable();
@@ -158,7 +158,7 @@ class CreateSchema extends Migration {
         });
 
         Schema::create('mst_SurveySubject', function (Blueprint $table) {
-            $table->increments('id')       ->nullable(false);
+            $table->increments('id')                    ->nullable(false);
             $table->string('name', 45)                  ->nullable(false);
             $table->string('last_name', 45)             ->nullable(false);
             $table->string('mothers_last_name', 45)     ->nullable();
