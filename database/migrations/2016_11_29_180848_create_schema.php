@@ -163,7 +163,7 @@ class CreateSchema extends Migration {
             $table->string('last_name', 45)             ->nullable(false);
             $table->string('mothers_last_name', 45)     ->nullable();
             $table->date('birthday')                    ->nullable();
-            $table->string('gender',2)                  ->nullable();
+            $table->string('gender',5)                  ->nullable();
             $table->string('address')                   ->nullable();
             $table->string('telephone')                 ->nullable();
             $table->string('email',45)                  ->nullable(false);
