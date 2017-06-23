@@ -14,7 +14,6 @@ namespace App\Http\Controllers\api\v1\app;
  * @author danielunag
  */
 use Illuminate\Http\Request;
-use Illuminate\Http\Response as IlluminateResponse;
 use App\mstSurveys;
 use App\mstSurveyApplied;
 use App\Http\Controllers\api\v1\Api;
@@ -25,7 +24,7 @@ class DashBoardController extends Api {
     public function index(Request $request) {
         try {
             $id = $request->get("id");
-
+            
             $survey = mstSurveys::
                     where("id", $id)
                     ->with([
