@@ -144,5 +144,14 @@ class DashBoardController extends Api {
                         ])
                         ->get()->toArray();
     }
+    
+    public function surveysList(Request $request){
+        try{
+            $surveys = mstSurveys::with("type")->withCount("applies")->get();
+            return $surveys;
+        } catch (\Exception $ex) {
+            return response()->json(["status" => false, "message" => "Error al obtener encuestas". $ex->getMessage()]);
+        }
+    }
 
 }

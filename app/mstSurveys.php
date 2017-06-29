@@ -44,9 +44,17 @@ class mstSurveys extends Model {
     public function surveyType() {
         return $this->hasMany('App\catSurveyType', 'id', 'idSurveyType');
     }
+    
+    public function type() {
+        return $this->hasOne('App\catSurveyType', 'id', 'idSurveyType');
+    }
 
     public function mstQuestions() {
         return $this->hasMany('App\mstQuestion', 'idSurvey');
+    }
+    
+    public function applies(){
+        return $this->hasMany('App\mstSurveyApplied', 'idSurvey');
     }
     
 }

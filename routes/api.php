@@ -88,4 +88,5 @@ Route::group([
     /* ----------   Dashboard   ----------     */
     Route::match(['get', 'post'],"dashboard/survey/"     , "api\\v1\app\DashBoardController@index");
     Route::match(['get', 'post'], "dashboard/download/excel", "api\\v1\app\\DashBoardController@downloadExcel");
+    Route::match(['get', 'post'], "backoffice/surveyslist/", "api\\v1\app\\DashBoardController@surveysList");
 });
